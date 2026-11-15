@@ -209,7 +209,7 @@
                     </div>
                     <div>
                         <label class="form-label">Base / Starting Price (PKR)</label>
-                        <input type="number" id="itemPrice" class="form-input" placeholder="e.g., 3200" required>
+                        <input type="number" id="itemPrice" class="form-input" placeholder="e.g., 3200 (or enter options below)">
                     </div>
                     <div>
                         <label class="form-label">Initial Stock Status</label>
@@ -248,8 +248,8 @@
                         <small style="color: var(--text-muted); font-size: 0.78rem;">Images are auto-compressed to preserve speed and browser storage.</small>
                     </div>
                     <div class="grid-full">
-                        <label class="form-label">Product Overview / Main Description</label>
-                        <textarea id="itemDesc" class="form-input" rows="3" placeholder="Add veterinary guidance, feeding instructions, or key benefits..." required></textarea>
+                        <label class="form-label">Product Overview / Main Description (Optional)</label>
+                        <textarea id="itemDesc" class="form-input" rows="3" placeholder="Add veterinary guidance, feeding instructions, or key benefits (Optional)..."></textarea>
                     </div>
 
                     <!-- Doctor-Controlled Clinical Accordion Inputs -->
@@ -278,6 +278,10 @@
                     <div class="grid-full" style="display: flex; gap: 10px; margin-top: 10px;">
                         <button type="submit" id="submitProductBtn" class="btn-primary-action" style="flex: 1; font-size: 1rem;">Upload & Publish to Store ➔</button>
                         <button type="button" id="cancelEditBtn" onclick="cancelEditing()" class="btn-secondary-action" style="display: none; padding: 12px 20px; cursor: pointer;">Cancel Edit</button>
+                    </div>
+
+                    <div class="grid-full">
+                        <div id="formStatusBanner" style="display: none; padding: 14px 18px; border-radius: 8px; margin-top: 8px; font-weight: 600; text-align: center; font-size: 0.95rem;"></div>
                     </div>
                 </div>
             </form>
@@ -832,6 +836,23 @@
             document.getElementById('productFormBox').scrollIntoView({ behavior: 'smooth' });
         }
 
+        function showFormStatus(msg, type) {
+            const banner = document.getElementById('formStatusBanner');
+            if (!banner) return;
+            banner.style.display = 'block';
+            if (type === 'success') {
+                banner.style.background = '#dcfce7';
+                banner.style.color = '#15803d';
+                banner.style.border = '1.5px solid #86efac';
+            } else {
+                banner.style.background = '#fee2e2';
+                banner.style.color = '#b91c1c';
+                banner.style.border = '1.5px solid #fca5a5';
+            }
+            banner.innerHTML = msg;
+            banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
         function cancelEditing() {
             document.getElementById('createProductForm').reset();
             document.getElementById('editProductId').value = '';
@@ -945,6 +966,11 @@
                 ? variants[0].price 
                 : Number(price);
 
+            if (!effectivePrice || isNaN(effectivePrice) || effectivePrice <= 0) {
+                showFormStatus("⚠️ Please enter a Base Price (PKR) or add at least one Size / Flavor Option.", "error");
+                return;
+            }
+
             const finalizeSave = (imageData) => {
                 const catalog = getCatalog();
 
@@ -958,7 +984,7 @@
                             category: category,
                             price: effectivePrice,
                             status: status,
-                            desc: desc,
+                            desc: desc || "Doctor-approved companion animal healthcare essential.",
                             icon: catalog[prodIndex].icon || "🐾"
                         };
 
@@ -987,7 +1013,7 @@
                         }
 
                         cancelEditing();
-                        alert(`✅ "${name}" updated and synced to cloud successfully!`);
+                        showFormStatus(`✅ "${name}" updated and synced to Google Cloud successfully!`, "success");
                         return;
                     }
                 }
@@ -999,7 +1025,7 @@
                     category: category,
                     price: effectivePrice,
                     status: status,
-                    desc: desc,
+                    desc: desc || "Doctor-approved companion animal healthcare essential.",
                     icon: "🐾"
                 };
 
@@ -1023,7 +1049,7 @@
                 }
 
                 cancelEditing();
-                alert(`✅ "${name}" is now live on your store and synced to cloud!`);
+                showFormStatus(`✅ "${name}" is now live on your store and synced to Google Cloud!`, "success");
             };
 
             const submitBtn = document.getElementById('submitProductBtn');
