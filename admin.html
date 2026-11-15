@@ -838,41 +838,73 @@
             document.getElementById('variantRowsContainer').innerHTML = '';
             populateCategoryDropdown();
             document.getElementById('formTitle').innerText = 'Add New Product to Store';
-            document.getElementById('submitProductBtn').innerText = 'Upload & Publish to Store ➔';
+            const submitBtn = document.getElementById('submitProductBtn');
+            if (submitBtn) {
+                submitBtn.innerText = 'Upload & Publish to Store ➔';
+                submitBtn.disabled = false;
+            }
             document.getElementById('cancelEditBtn').style.display = 'none';
         }
 
-        // Image compression helper to prevent localStorage 5MB quota overflows
+        // Firestore data sanitizer (removes any undefined properties so Firestore never throws)
+        function sanitizeForFirestore(obj) {
+            const clean = {};
+            for (const key in obj) {
+                if (obj[key] !== undefined && obj[key] !== null) {
+                    clean[key] = obj[key];
+                }
+            }
+            return clean;
+        }
+
+        // Robust image compression helper with error handling
         function compressImageFile(file, maxWidth, maxHeight, quality, callback) {
+            if (!file) {
+                callback(null);
+                return;
+            }
             const reader = new FileReader();
             reader.onload = function(event) {
                 const img = new Image();
                 img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    let width = img.width;
-                    let height = img.height;
+                    try {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
 
-                    if (width > height) {
-                        if (width > maxWidth) {
-                            height = Math.round((height * maxWidth) / width);
-                            width = maxWidth;
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height = Math.round((height * maxWidth) / width);
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width = Math.round((width * maxHeight) / height);
+                                height = maxHeight;
+                            }
                         }
-                    } else {
-                        if (height > maxHeight) {
-                            width = Math.round((width * maxHeight) / height);
-                            height = maxHeight;
-                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+                        callback(compressedBase64);
+                    } catch (err) {
+                        console.warn("Canvas compression failed, using original data:", err);
+                        callback(event.target.result);
                     }
-
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
-                    callback(compressedBase64);
+                };
+                img.onerror = function() {
+                    console.warn("Image rendering failed, proceeding without photo");
+                    callback(null);
                 };
                 img.src = event.target.result;
+            };
+            reader.onerror = function() {
+                console.warn("FileReader failed, proceeding without photo");
+                callback(null);
             };
             reader.readAsDataURL(file);
         }
@@ -920,31 +952,47 @@
                     // Update existing product
                     const prodIndex = catalog.findIndex(p => String(p.id) === String(editId));
                     if (prodIndex > -1) {
-                        catalog[prodIndex].name = name;
-                        catalog[prodIndex].category = category;
-                        catalog[prodIndex].price = effectivePrice;
-                        catalog[prodIndex].status = status;
-                        catalog[prodIndex].desc = desc;
-                        catalog[prodIndex].variants = variants.length > 0 ? variants : undefined;
-                        catalog[prodIndex].indications = indications || undefined;
-                        catalog[prodIndex].feedingGuide = feedingGuide || undefined;
-                        catalog[prodIndex].storageInfo = storageInfo || undefined;
+                        const updated = {
+                            id: catalog[prodIndex].id,
+                            name: name,
+                            category: category,
+                            price: effectivePrice,
+                            status: status,
+                            desc: desc,
+                            icon: catalog[prodIndex].icon || "🐾"
+                        };
 
                         if (imageData) {
-                            catalog[prodIndex].image = imageData;
+                            updated.image = imageData;
+                        } else if (catalog[prodIndex].image) {
+                            updated.image = catalog[prodIndex].image;
                         }
 
+                        if (variants.length > 0) updated.variants = variants;
+                        if (indications) updated.indications = indications;
+                        if (feedingGuide) updated.feedingGuide = feedingGuide;
+                        if (storageInfo) updated.storageInfo = storageInfo;
+
+                        catalog[prodIndex] = updated;
                         saveCatalog(catalog);
+
                         if (db) {
-                            db.collection('products').doc(String(catalog[prodIndex].id)).set(catalog[prodIndex]).catch(e => console.warn("Firestore update:", e));
+                            try {
+                                const cleanDoc = sanitizeForFirestore(updated);
+                                db.collection('products').doc(String(updated.id)).set(cleanDoc)
+                                    .catch(e => console.warn("Firestore update async error:", e));
+                            } catch (e) {
+                                console.warn("Firestore update error:", e);
+                            }
                         }
+
                         cancelEditing();
-                        alert(`"${name}" updated and synced to cloud successfully!`);
+                        alert(`✅ "${name}" updated and synced to cloud successfully!`);
                         return;
                     }
                 }
 
-                // Create new product
+                // Create new product (only attach non-empty fields so Firestore never crashes on undefined)
                 const newProduct = {
                     id: Date.now(),
                     name: name,
@@ -952,26 +1000,42 @@
                     price: effectivePrice,
                     status: status,
                     desc: desc,
-                    variants: variants.length > 0 ? variants : undefined,
-                    indications: indications || undefined,
-                    feedingGuide: feedingGuide || undefined,
-                    storageInfo: storageInfo || undefined,
-                    image: imageData || null,
                     icon: "🐾"
                 };
 
+                if (imageData) newProduct.image = imageData;
+                if (variants.length > 0) newProduct.variants = variants;
+                if (indications) newProduct.indications = indications;
+                if (feedingGuide) newProduct.feedingGuide = feedingGuide;
+                if (storageInfo) newProduct.storageInfo = storageInfo;
+
                 catalog.unshift(newProduct);
                 saveCatalog(catalog);
+
                 if (db) {
-                    db.collection('products').doc(String(newProduct.id)).set(newProduct).catch(e => console.warn("Firestore save new:", e));
+                    try {
+                        const cleanDoc = sanitizeForFirestore(newProduct);
+                        db.collection('products').doc(String(newProduct.id)).set(cleanDoc)
+                            .catch(e => console.warn("Firestore save async error:", e));
+                    } catch (e) {
+                        console.warn("Firestore write error:", e);
+                    }
                 }
 
                 cancelEditing();
-                alert(`"${name}" is now live on your store and synced to cloud!`);
+                alert(`✅ "${name}" is now live on your store and synced to cloud!`);
             };
 
+            const submitBtn = document.getElementById('submitProductBtn');
+            if (submitBtn) {
+                submitBtn.innerText = 'Uploading & Syncing...';
+                submitBtn.disabled = true;
+            }
+
             if (fileInput.files && fileInput.files[0]) {
-                compressImageFile(fileInput.files[0], 500, 500, 0.75, finalizeSave);
+                compressImageFile(fileInput.files[0], 500, 500, 0.75, (imgData) => {
+                    finalizeSave(imgData);
+                });
             } else {
                 finalizeSave(null);
             }
