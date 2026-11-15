@@ -360,9 +360,36 @@
         </div>
     </footer>
 
+    <!-- Firebase Cloud SDK Compat -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
     <!-- Interactive Shop & Cart Logic -->
     <script>
         const DOCTOR_WHATSAPP = "923365024014";
+
+        // Firebase Cloud Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPIGa6i4CF-cfXL3iBHfqvkl0FJevZ-E8",
+            authDomain: "dr-rana-arham-vet.firebaseapp.com",
+            projectId: "dr-rana-arham-vet",
+            storageBucket: "dr-rana-arham-vet.firebasestorage.app",
+            messagingSenderId: "1066420901422",
+            appId: "1:1066420901422:web:37e41bf291e6d5a2e431bf"
+        };
+
+        let db = null;
+        try {
+            if (typeof firebase !== 'undefined') {
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                }
+                db = firebase.firestore();
+            }
+        } catch(e) {
+            console.warn("Firebase initialization warning:", e);
+        }
+
         let activeCategory = 'all';
         let searchQuery = '';
 
@@ -936,11 +963,38 @@ Please confirm product availability and dispatch details.`;
             }
         }
 
+        // Realtime Cloud Firestore Synchronization
+        function initShopCloudSync() {
+            if (!db) return;
+
+            // Sync categories live from Cloud Firestore
+            db.collection('settings').doc('categories').onSnapshot(doc => {
+                if (doc.exists && doc.data().list && doc.data().list.length > 0) {
+                    localStorage.setItem('vet_store_categories', JSON.stringify(doc.data().list));
+                    renderCategoryChips();
+                }
+            }, err => console.warn("Shop Category Sync:", err));
+
+            // Sync products live from Cloud Firestore
+            db.collection('products').onSnapshot(snapshot => {
+                if (!snapshot.empty) {
+                    const cloudProducts = [];
+                    snapshot.forEach(doc => {
+                        cloudProducts.push(doc.data());
+                    });
+                    cloudProducts.sort((a, b) => (b.id || 0) - (a.id || 0));
+                    localStorage.setItem('vet_store_inventory', JSON.stringify(cloudProducts));
+                    renderProducts();
+                }
+            }, err => console.warn("Shop Products Cloud Sync:", err));
+        }
+
         // Initialize on load
         window.addEventListener('DOMContentLoaded', () => {
             renderCategoryChips();
             renderProducts();
             updateCartUI();
+            initShopCloudSync();
         });
     </script>
 

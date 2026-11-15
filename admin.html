@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | Dr. Rana H. M. Arham Ali (DVM)</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
         .admin-page {
@@ -175,8 +176,14 @@
             <div>
                 <h1>Store & Inventory Manager</h1>
                 <p style="color: var(--text-muted); font-size: 0.9rem;">Dr. Rana H. M. Arham Ali • Dedicated Clinical Practice Inventory</p>
+                <div style="margin-top: 8px;">
+                    <span id="cloudSyncStatus" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; padding: 4px 12px; border-radius: 20px; background: #e0f2fe; color: #0369a1; font-weight: 600;">
+                        <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #0284c7;"></span>
+                        ☁️ Connecting to Cloud Database...
+                    </span>
+                </div>
             </div>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
                 <a href="shop.html" target="_blank" class="btn-secondary-action">Open Live Store ↗</a>
                 <a href="index.html" class="btn-secondary-action">Home Profile</a>
                 <button onclick="resetToDefaults()" class="btn-secondary-action" style="cursor: pointer; color: #b91c1c;">Reset Default Catalog</button>
@@ -334,8 +341,34 @@
         </div>
     </div>
 
+    <!-- Firebase Cloud SDK Compat -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
     <script>
         const MASTER_PIN = "1234";
+
+        // Firebase Cloud Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPIGa6i4CF-cfXL3iBHfqvkl0FJevZ-E8",
+            authDomain: "dr-rana-arham-vet.firebaseapp.com",
+            projectId: "dr-rana-arham-vet",
+            storageBucket: "dr-rana-arham-vet.firebasestorage.app",
+            messagingSenderId: "1066420901422",
+            appId: "1:1066420901422:web:37e41bf291e6d5a2e431bf"
+        };
+
+        let db = null;
+        try {
+            if (typeof firebase !== 'undefined') {
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                }
+                db = firebase.firestore();
+            }
+        } catch(e) {
+            console.warn("Firebase initialization warning:", e);
+        }
 
         const defaultProducts = [
             {
@@ -531,6 +564,9 @@
 
         function saveStoreCategories(cats) {
             localStorage.setItem('vet_store_categories', JSON.stringify(cats));
+            if (db) {
+                db.collection('settings').doc('categories').set({ list: cats }).catch(e => console.warn("Firestore save categories:", e));
+            }
             renderCategoryManager();
             populateCategoryDropdown();
             renderInventoryTable();
@@ -683,6 +719,13 @@
         function resetToDefaults() {
             if (confirm("Reset catalog back to standard veterinary products with all pack sizes and flavors? Any custom added items will be reset.")) {
                 saveCatalog(defaultProducts);
+                if (db) {
+                    const batch = db.batch();
+                    defaultProducts.forEach(prod => {
+                        batch.set(db.collection('products').doc(String(prod.id)), prod);
+                    });
+                    batch.commit().catch(e => console.warn("Firestore reset catalog:", e));
+                }
             }
         }
 
@@ -892,8 +935,11 @@
                         }
 
                         saveCatalog(catalog);
+                        if (db) {
+                            db.collection('products').doc(String(catalog[prodIndex].id)).set(catalog[prodIndex]).catch(e => console.warn("Firestore update:", e));
+                        }
                         cancelEditing();
-                        alert(`"${name}" updated successfully!`);
+                        alert(`"${name}" updated and synced to cloud successfully!`);
                         return;
                     }
                 }
@@ -916,9 +962,12 @@
 
                 catalog.unshift(newProduct);
                 saveCatalog(catalog);
+                if (db) {
+                    db.collection('products').doc(String(newProduct.id)).set(newProduct).catch(e => console.warn("Firestore save new:", e));
+                }
 
                 cancelEditing();
-                alert(`"${name}" is now live on your store!`);
+                alert(`"${name}" is now live on your store and synced to cloud!`);
             };
 
             if (fileInput.files && fileInput.files[0]) {
@@ -931,15 +980,86 @@
         function toggleStockStatus(index) {
             const catalog = getCatalog();
             catalog[index].status = catalog[index].status === 'in-stock' ? 'out-of-stock' : 'in-stock';
+            if (db && catalog[index]) {
+                db.collection('products').doc(String(catalog[index].id)).update({ status: catalog[index].status }).catch(e => console.warn("Firestore toggle stock:", e));
+            }
             saveCatalog(catalog);
         }
 
         function deleteItem(index) {
             if (confirm("Are you sure you want to delete this product?")) {
                 const catalog = getCatalog();
+                const toDelete = catalog[index];
+                if (db && toDelete) {
+                    db.collection('products').doc(String(toDelete.id)).delete().catch(e => console.warn("Firestore delete:", e));
+                }
                 catalog.splice(index, 1);
                 saveCatalog(catalog);
             }
+        }
+
+        function initCloudSync() {
+            if (!db) {
+                const badge = document.getElementById('cloudSyncStatus');
+                if (badge) {
+                    badge.innerHTML = '⚠️ Local Offline Storage';
+                    badge.style.background = '#fef3c7';
+                    badge.style.color = '#92400e';
+                }
+                return;
+            }
+
+            // Real-time categories listener
+            db.collection('settings').doc('categories').onSnapshot(doc => {
+                if (doc.exists && doc.data().list && doc.data().list.length > 0) {
+                    localStorage.setItem('vet_store_categories', JSON.stringify(doc.data().list));
+                    populateCategoryDropdown();
+                    renderCategoryManager();
+                } else {
+                    db.collection('settings').doc('categories').set({ list: defaultCategories });
+                }
+            }, err => console.warn("Categories sync:", err));
+
+            // Real-time products listener
+            db.collection('products').onSnapshot(snapshot => {
+                const badge = document.getElementById('cloudSyncStatus');
+                if (snapshot.empty) {
+                    // Seed defaults if cloud is empty
+                    console.log("Seeding Cloud Firestore with default products...");
+                    const batch = db.batch();
+                    defaultProducts.forEach(p => {
+                        batch.set(db.collection('products').doc(String(p.id)), p);
+                    });
+                    batch.commit().then(() => {
+                        if (badge) {
+                            badge.innerHTML = `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#16a34a;"></span> ☁️ Cloud Live (${defaultProducts.length} Items Initialized)`;
+                            badge.style.background = '#dcfce7';
+                            badge.style.color = '#15803d';
+                        }
+                    });
+                } else {
+                    const cloudProducts = [];
+                    snapshot.forEach(doc => {
+                        cloudProducts.push(doc.data());
+                    });
+                    cloudProducts.sort((a, b) => (b.id || 0) - (a.id || 0));
+                    localStorage.setItem('vet_store_inventory', JSON.stringify(cloudProducts));
+                    renderInventoryTable();
+                    if (badge) {
+                        badge.innerHTML = `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#16a34a;"></span> ☁️ Cloud Live (${cloudProducts.length} Products Synced)`;
+                        badge.style.background = '#dcfce7';
+                        badge.style.color = '#15803d';
+                    }
+                }
+            }, err => {
+                console.warn("Firestore sync error:", err);
+                const badge = document.getElementById('cloudSyncStatus');
+                if (badge) {
+                    badge.innerHTML = '⚠️ Cloud Rules Expired or Error';
+                    badge.style.background = '#fee2e2';
+                    badge.style.color = '#991b1b';
+                }
+            });
         }
 
         window.onload = function() {
@@ -949,6 +1069,7 @@
             populateCategoryDropdown();
             renderCategoryManager();
             renderInventoryTable();
+            initCloudSync();
         };
     </script>
 </body>

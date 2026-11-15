@@ -227,9 +227,35 @@
         </div>
     </footer>
 
+    <!-- Firebase Cloud SDK Compat -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
     <!-- Interactive Script -->
     <script>
         const DOCTOR_WHATSAPP = "923365024014";
+
+        // Firebase Cloud Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPIGa6i4CF-cfXL3iBHfqvkl0FJevZ-E8",
+            authDomain: "dr-rana-arham-vet.firebaseapp.com",
+            projectId: "dr-rana-arham-vet",
+            storageBucket: "dr-rana-arham-vet.firebasestorage.app",
+            messagingSenderId: "1066420901422",
+            appId: "1:1066420901422:web:37e41bf291e6d5a2e431bf"
+        };
+
+        let db = null;
+        try {
+            if (typeof firebase !== 'undefined') {
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                }
+                db = firebase.firestore();
+            }
+        } catch(e) {
+            console.warn("Firebase initialization warning:", e);
+        }
 
         // Dynamic Store Categories System (Synced with Admin)
         const defaultCategories = [
@@ -957,9 +983,34 @@ Please confirm product availability and dispatch details.`;
             popup.classList.toggle('active');
         }
 
+        // Realtime Cloud Product Synchronization
+        function initProductCloudSync() {
+            if (!db) return;
+            const urlParams = new URLSearchParams(window.location.search);
+            const prodId = urlParams.get('id');
+            if (!prodId) return;
+
+            // Sync this product live from Cloud Firestore
+            db.collection('products').doc(String(prodId)).onSnapshot(doc => {
+                if (doc.exists) {
+                    currentProduct = doc.data();
+                    renderProductDetail();
+                }
+            }, err => console.warn("Product Detail Cloud Sync:", err));
+
+            // Sync categories live from Cloud Firestore
+            db.collection('settings').doc('categories').onSnapshot(doc => {
+                if (doc.exists && doc.data().list && doc.data().list.length > 0) {
+                    localStorage.setItem('vet_store_categories', JSON.stringify(doc.data().list));
+                    renderRelatedEssentials();
+                }
+            }, err => console.warn("Product Categories Sync:", err));
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             loadProductDetail();
             updateCartUI();
+            initProductCloudSync();
         });
     </script>
 </body>
