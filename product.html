@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Product Details | Dr. Rana H. M. Arham Ali (DVM) Pet Shop</title>
+    <meta name="description" id="metaDescription" content="Authentic veterinary clinical product curated and recommended by Dr. Rana H. M. Arham Ali (DVM, RVMP ISB). Direct WhatsApp orders available.">
+
+    <!-- Open Graph (WhatsApp, Facebook, iMessage) -->
+    <meta property="og:type" content="product">
+    <meta property="og:title" id="ogTitle" content="Clinical Pet Product • Dr. Rana H. M. Arham Ali (DVM)">
+    <meta property="og:description" id="ogDesc" content="Doctor-approved companion animal nutrition and healthcare supplies.">
+    <meta property="og:image" id="ogImage" content="images/mockup_concept.jpg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" id="twitterTitle" content="Clinical Pet Product • Dr. Rana H. M. Arham Ali (DVM)">
+    <meta name="twitter:description" id="twitterDesc" content="Doctor-approved companion animal nutrition and healthcare supplies.">
+    <meta name="twitter:image" id="twitterImage" content="images/mockup_concept.jpg">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Emergency & Accreditation Ribbon -->
+    <div class="top-notice-bar">
+        <div class="container notice-content">
+            <div class="notice-item">
+                <span class="pulse-indicator"></span>
+                <strong>24/7 Global Emergency Care:</strong> Free Online Medical Consultations Available Worldwide
+            </div>
+            <div class="notice-item">
+                <span>📍 Small Animal Clinical Practice & Telemedicine</span>
+                <span style="margin: 0 8px;">•</span>
+                <span>Helpline: <a href="tel:+923365024014" style="color: #38bdf8; text-decoration: underline;">+92 336 5024014</a></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <header class="main-header">
+        <div class="container nav-wrapper">
+            <a href="index.html" class="doctor-brand">
+                <div class="brand-crest">VET</div>
+                <div class="brand-details">
+                    <h2>Dr. Rana H. M. Arham Ali</h2>
+                    <span>DVM (RVMP ISB) • Clinical Surgery & Diagnostics</span>
+                </div>
+            </a>
+
+            <div class="nav-right-actions">
+                <button onclick="openCart()" class="cart-trigger-btn" aria-label="Shopping Cart">
+                    <span>🛒 Cart</span>
+                    <span class="cart-badge" id="cartCount">0</span>
+                </button>
+                <button class="mobile-nav-toggle" id="mobileNavToggle" onclick="toggleMobileNav()" aria-label="Toggle navigation menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html#about" class="nav-link" onclick="closeMobileNav()">Doctor Profile</a>
+                <a href="index.html#how-it-works" class="nav-link" onclick="closeMobileNav()">How It Works</a>
+                <a href="index.html#specialties" class="nav-link" onclick="closeMobileNav()">Specialties</a>
+                <a href="shop.html" class="nav-link" onclick="closeMobileNav()" style="color: var(--teal-surgical); font-weight: 700;">Pet Shop</a>
+                <a href="index.html#faq" class="nav-link" onclick="closeMobileNav()">FAQ</a>
+                <div class="mobile-menu-help">
+                    <span style="font-size: 0.8rem; color: #065f46; font-weight: 600; display: block;">24/7 Veterinary Helpline</span>
+                    <a href="tel:+923365024014" style="color: #00b074; font-weight: 800; font-size: 1.05rem; text-decoration: none;">📞 +92 336 5024014</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Product Detail Container -->
+    <main class="product-detail-wrapper">
+
+        <!-- Breadcrumb & Back Bar -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+            <nav class="breadcrumb-bar" style="margin-bottom: 0;">
+                <a href="index.html">Home</a>
+                <span class="breadcrumb-separator">/</span>
+                <a href="shop.html">Pet Shop</a>
+                <span class="breadcrumb-separator">/</span>
+                <span id="breadcrumbCategory">Category</span>
+                <span class="breadcrumb-separator">/</span>
+                <strong id="breadcrumbTitle" style="color: var(--navy-dark);">Product</strong>
+            </nav>
+            <a href="shop.html" class="btn-secondary-action" style="padding: 6px 14px; font-size: 0.85rem; text-decoration: none;">
+                ← Back to Pet Shop Catalog
+            </a>
+        </div>
+
+        <!-- 2-Column Product Showcase Grid -->
+        <div class="product-detail-grid" id="productDetailContainer">
+            <!-- Dynamic Content Injected Here by JS -->
+            <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                <p style="color: var(--text-muted); font-size: 1.1rem;">Loading clinical product details...</p>
+            </div>
+        </div>
+
+        <!-- Related Products Section -->
+        <section class="related-section" id="relatedSection">
+            <div class="related-section-header">
+                <div>
+                    <h3 class="related-section-title">Related Clinical Essentials</h3>
+                    <p style="color: var(--text-muted); font-size: 0.88rem; margin: 4px 0 0;">
+                        Frequently paired and veterinary-approved alternatives in <span id="relatedCategoryName">this category</span>.
+                    </p>
+                </div>
+                <a href="shop.html" style="color: var(--medical-blue); font-weight: 700; font-size: 0.88rem; text-decoration: none;">
+                    View Full Catalog ➔
+                </a>
+            </div>
+
+            <div class="related-grid" id="relatedProductsGrid">
+                <!-- Injected via JavaScript -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Cart Drawer Modal -->
+    <div class="cart-drawer-overlay" id="cartOverlay">
+        <div class="cart-drawer">
+            <div class="cart-header">
+                <h3>Your Clinic Cart</h3>
+                <button class="cart-close-btn" onclick="closeCart()">&times;</button>
+            </div>
+
+            <div class="cart-items" id="cartItemsList">
+                <p class="cart-empty-text">Your cart is currently empty.</p>
+            </div>
+
+            <div class="cart-summary">
+                <div class="cart-total-row">
+                    <span>Subtotal:</span>
+                    <strong id="cartTotal">PKR 0</strong>
+                </div>
+
+                <!-- Pet Parent Delivery Details -->
+                <div class="cart-customer-form">
+                    <label class="form-label" style="font-size: 0.8rem; margin-top: 10px;">Pet Parent Name *</label>
+                    <input type="text" id="custName" class="form-input" placeholder="e.g., Sarah Khan" required>
+
+                    <label class="form-label" style="font-size: 0.8rem; margin-top: 8px;">Phone / WhatsApp Number *</label>
+                    <input type="tel" id="custPhone" class="form-input" placeholder="e.g., 0300 1234567" required>
+
+                    <label class="form-label" style="font-size: 0.8rem; margin-top: 8px;">Delivery Address (City / Sector) *</label>
+                    <textarea id="custAddress" class="form-input" rows="2" placeholder="e.g., House 12, St 4, F-10/2, Islamabad" required></textarea>
+
+                    <label class="form-label" style="font-size: 0.8rem; margin-top: 8px;">Preferred Payment</label>
+                    <select id="custPayment" class="form-select">
+                        <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
+                        <option value="Online Bank Transfer / Raast">Online Bank Transfer / Raast</option>
+                        <option value="JazzCash / EasyPaisa">JazzCash / EasyPaisa</option>
+                    </select>
+                </div>
+
+                <button class="btn-checkout-wa" onclick="checkoutViaWhatsApp()">
+                    Confirm & Send Order via WhatsApp ➔
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating 24/7 WhatsApp Quick-Dock Button -->
+    <div class="floating-whatsapp-widget">
+        <button class="floating-wa-btn" onclick="toggleWaPopup()" title="24/7 WhatsApp Medical Line">
+            <span class="wa-beacon-dot"></span>
+            💬 24/7 Help
+        </button>
+        <div class="floating-wa-popup" id="waPopup">
+            <div class="wa-popup-header">
+                <div>
+                    <strong style="display:block; font-size: 0.95rem;">Dr. Rana H. M. Arham Ali</strong>
+                    <span style="font-size: 0.78rem; opacity: 0.9;">DVM (RVMP ISB) • Emergency Helpline</span>
+                </div>
+                <button onclick="toggleWaPopup()" style="background:none; border:none; color:#fff; font-size:1.2rem; cursor:pointer;">&times;</button>
+            </div>
+            <div class="wa-popup-body">
+                <p style="font-size: 0.82rem; color: #475569; margin-bottom: 12px;">
+                    Have questions about this pet food or prescription diet? Connect directly with the doctor:
+                </p>
+                <a href="https://wa.me/923365024014?text=🛍️%20*PET%20SHOP%20PRODUCT%20INQUIRY*%0AHello%20Dr.%20Arham,%20I%20have%20a%20question%20regarding%20a%20product%20on%20your%20veterinary%20store." target="_blank" class="wa-option-btn">
+                    🛍️ Ask About Products & Feeding
+                </a>
+                <a href="https://wa.me/923365024014?text=🚨%20*EMERGENCY%20CLINICAL%20CONSULTATION*%0AHello%20Dr.%20Arham,%20my%20pet%20needs%20urgent%20medical%20advice." target="_blank" class="wa-option-btn urgent">
+                    🚨 Emergency Clinical Support
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-columns">
+                <div class="footer-col">
+                    <div class="doctor-brand" style="margin-bottom: 14px;">
+                        <div class="brand-crest">VET</div>
+                        <div class="brand-details">
+                            <h3 style="color: #ffffff; font-size: 1.15rem;">Dr. Rana H. M. Arham Ali</h3>
+                            <span style="color: #93c5fd;">DVM (RVMP ISB) • Small Animal Practice</span>
+                        </div>
+                    </div>
+                    <p style="color: #94a3b8; font-size: 0.85rem; line-height: 1.6;">
+                        Dedicated companion animal healthcare, emergency stabilization, specialized surgery, and authentic veterinary-grade pet nutrition.
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <h4>Direct Assistance</h4>
+                    <ul class="footer-links">
+                        <li><a href="shop.html">Return to Pet Shop Catalog</a></li>
+                        <li><a href="index.html#booking">Book Free Video Consultation</a></li>
+                        <li><a href="https://wa.me/923365024014" target="_blank" style="color: #38bdf8;">WhatsApp Helpline: +92 336 5024014</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>&copy; 2026 Dr. Rana H. M. Arham Ali (DVM). All rights reserved.</div>
+                <div>Curated Companion Animal Pet Shop & Healthcare Boutique</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Script -->
+    <script>
+        const DOCTOR_WHATSAPP = "923365024014";
+
+        // Dynamic Store Categories System (Synced with Admin)
+        const defaultCategories = [
+            { id: 'cat-food', name: 'Cat Nutrition', icon: '🐱' },
+            { id: 'dog-food', name: 'Dog Nutrition', icon: '🐶' },
+            { id: 'wet-food', name: 'Wet Food & Pouches', icon: '🥫' },
+            { id: 'hygiene', name: 'Litter & Hygiene', icon: '✨' },
+            { id: 'accessories', name: 'Accessories & Travel', icon: '🩺' }
+        ];
+
+        function getStoreCategories() {
+            const data = localStorage.getItem('vet_store_categories');
+            if (data) {
+                try {
+                    const parsed = JSON.parse(data);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                } catch(e) {}
+            }
+            localStorage.setItem('vet_store_categories', JSON.stringify(defaultCategories));
+            return defaultCategories;
+        }
+
+        function getCategoryLabels() {
+            const cats = getStoreCategories();
+            const map = {};
+            cats.forEach(c => { map[c.id] = c.name; });
+            return map;
+        }
+
+        const defaultProducts = [
+            {
+                id: 1,
+                name: "Royal Canin Feline Health Nutrition",
+                category: "cat-food",
+                price: 3850,
+                status: "in-stock",
+                desc: "Scientifically formulated for adult cats to promote optimal coat condition, urinary tract health, and easy digestion.",
+                icon: "🐱",
+                variants: [
+                    { label: "400g Pouch", size: "400g Pouch", price: 1650 },
+                    { label: "1.5 kg Bag", size: "1.5 kg Bag", price: 3850 },
+                    { label: "4 kg Bag", size: "4 kg Bag", price: 8900 }
+                ]
+            },
+            {
+                id: 2,
+                name: "Reflex Plus Mother & Baby Cat / Kitten Food",
+                category: "cat-food",
+                price: 3850,
+                status: "in-stock",
+                desc: "Nutrient-dense kibble enriched with DHA, essential fatty acids, and high protein to boost healthy kitten immune defense.",
+                icon: "🍼",
+                variants: [
+                    { label: "1.5 kg Bag", size: "1.5 kg Bag", price: 3850 },
+                    { label: "3 kg Bag", size: "3 kg Bag", price: 7200 },
+                    { label: "15 kg Breeder Pack", size: "15 kg Breeder Pack", price: 26500 }
+                ]
+            },
+            {
+                id: 3,
+                name: "Royal Canin Maxi Adult Complete Dog Food",
+                category: "dog-food",
+                price: 6800,
+                status: "in-stock",
+                desc: "Veterinary-approved balanced nutrition for medium & large adult dogs, supporting joint mobility and gut microflora.",
+                icon: "🐕",
+                variants: [
+                    { label: "3 kg Bag", size: "3 kg Bag", price: 6800 },
+                    { label: "10 kg Bag", size: "10 kg Bag", price: 18900 },
+                    { label: "15 kg Bag", size: "15 kg Bag", price: 26500 }
+                ]
+            },
+            {
+                id: 4,
+                name: "Reflex Plus High-Protein Puppy Growth Food",
+                category: "dog-food",
+                price: 4950,
+                status: "in-stock",
+                desc: "High-protein formula enriched with vitamins, minerals, and calcium for robust bone, muscular, and brain development.",
+                icon: "🐶",
+                variants: [
+                    { label: "3 kg Bag", size: "3 kg Bag", price: 4950 },
+                    { label: "15 kg Bag", size: "15 kg Bag", price: 21000 }
+                ]
+            },
+            {
+                id: 5,
+                name: "Reflex Plus Gourmet Cat Wet Pouches (85g)",
+                category: "wet-food",
+                price: 280,
+                status: "in-stock",
+                desc: "Tender meat chunks in savory gravy, providing essential hydration, moisture, and taurine for cardiovascular health.",
+                icon: "🐟",
+                variants: [
+                    { label: "🍗 Tender Chicken in Gravy (85g)", size: "🍗 Tender Chicken (85g)", price: 280 },
+                    { label: "🐟 Salmon & Tuna in Jelly (85g)", size: "🐟 Salmon & Tuna (85g)", price: 290 },
+                    { label: "🥩 Real Beef & Liver Gravy (85g)", size: "🥩 Beef & Liver (85g)", price: 295 },
+                    { label: "📦 Multipack Box (12 x 85g)", size: "Box of 12 x 85g", price: 3200 }
+                ]
+            },
+            {
+                id: 6,
+                name: "Pedigree Balanced Gravy Pouches Dog Food (100g)",
+                category: "wet-food",
+                price: 260,
+                status: "in-stock",
+                desc: "Succulent real meat chunks in jelly with balanced zinc and omega-6 fatty acids to nourish dog skin and coat.",
+                icon: "🥫",
+                variants: [
+                    { label: "🥩 Real Beef Chunks (100g)", size: "🥩 Beef Chunks (100g)", price: 260 },
+                    { label: "🍗 Grilled Chicken & Liver (100g)", size: "🍗 Grilled Chicken (100g)", price: 260 },
+                    { label: "📦 Value Box (12 x 100g)", size: "Multipack of 12 x 100g", price: 2800 }
+                ]
+            },
+            {
+                id: 7,
+                name: "Bentonite Odor-Lock Clumping Cat Litter",
+                category: "hygiene",
+                price: 1050,
+                status: "in-stock",
+                desc: "Low-dust, ultra-fast clumping natural clay with activated charcoal for superior ammonia odor control.",
+                icon: "✨",
+                variants: [
+                    { label: "5 Liters (Baby Powder Scent)", size: "5 L (Baby Powder)", price: 1050 },
+                    { label: "10 Liters (Activated Charcoal)", size: "10 L (Activated Charcoal)", price: 1850 },
+                    { label: "20 Liters (Ultra Clumping Duo)", size: "20 L (Ultra Clumping)", price: 3450 }
+                ]
+            },
+            {
+                id: 8,
+                name: "Ergonomic Panoramic Ventilated Pet Carrier",
+                category: "accessories",
+                price: 4600,
+                status: "in-stock",
+                desc: "Heavy-duty, secure-locking travel crate with 360-degree ventilation holes, ideal for veterinary clinic visits.",
+                icon: "🎒",
+                variants: [
+                    { label: "Standard Size (< 6kg Pets)", size: "Standard (< 6kg)", price: 4600 },
+                    { label: "Deluxe Large (< 12kg Pets)", size: "Deluxe (< 12kg)", price: 6200 }
+                ]
+            },
+            {
+                id: 9,
+                name: "Soft Breathable Post-Op Recovery Body Suit",
+                category: "accessories",
+                price: 1750,
+                status: "in-stock",
+                desc: "Comfortable cotton postoperative suit that prevents wound licking without the anxiety caused by plastic e-collars.",
+                icon: "🩺",
+                variants: [
+                    { label: "Small (Cats & Puppies < 3kg)", size: "Small (< 3kg)", price: 1750 },
+                    { label: "Medium (Cats / Dogs 3-6kg)", size: "Medium (3-6kg)", price: 1950 },
+                    { label: "Large (Dogs 7-15kg)", size: "Large (7-15kg)", price: 2250 },
+                    { label: "XL (Large Breeds > 15kg)", size: "XL (> 15kg)", price: 2650 }
+                ]
+            },
+            {
+                id: 10,
+                name: "Stainless Steel Undercoat Deshedding Comb",
+                category: "hygiene",
+                price: 1350,
+                status: "in-stock",
+                desc: "Gentle rounded-tip shedding tool to minimize hairballs and remove loose mats without irritating sensitive skin.",
+                icon: "🪮"
+            },
+            {
+                id: 11,
+                name: "Reflective Shock-Absorbing Dog Harness & Leash",
+                category: "accessories",
+                price: 2250,
+                status: "in-stock",
+                desc: "Durable nylon harness with padded chest plate and dual-clip leash for safe, stress-free dog walking and control.",
+                icon: "🦮",
+                variants: [
+                    { label: "Medium (Dogs 10-25kg)", size: "Medium (10-25kg)", price: 2250 },
+                    { label: "Large (Dogs 25-45kg)", size: "Large (25-45kg)", price: 2650 }
+                ]
+            }
+        ];
+
+        function getStoreInventory() {
+            const stored = localStorage.getItem('vet_store_inventory');
+            if (stored) {
+                try {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        parsed.forEach(item => {
+                            const def = defaultProducts.find(d => d.id === item.id);
+                            if (def && def.variants && (!item.variants || item.variants.length === 0)) {
+                                item.variants = def.variants;
+                            }
+                        });
+                        return parsed;
+                    }
+                } catch(e) {}
+            }
+            localStorage.setItem('vet_store_inventory', JSON.stringify(defaultProducts));
+            return defaultProducts;
+        }
+
+        let currentProduct = null;
+        let selectedVariantIndex = 0;
+        let selectedQuantity = 1;
+
+        // Load and render product from query param ?id=
+        function loadProductDetail() {
+            const params = new URLSearchParams(window.location.search);
+            const productId = parseInt(params.get('id'), 10);
+
+            const inventory = getStoreInventory();
+            currentProduct = inventory.find(p => p.id === productId);
+
+            // Fallback to first product if invalid ID
+            if (!currentProduct) {
+                currentProduct = inventory[0];
+            }
+
+            // Update Page Title, Breadcrumbs & Dynamic Meta Tags
+            const categoryLabels = getCategoryLabels();
+            const catName = categoryLabels[currentProduct.category] || currentProduct.category;
+            document.getElementById('pageTitle').innerText = `${currentProduct.name} | Dr. Rana Arham Ali Pet Shop`;
+            document.getElementById('breadcrumbCategory').innerText = catName;
+            document.getElementById('breadcrumbTitle').innerText = currentProduct.name;
+            document.getElementById('relatedCategoryName').innerText = catName;
+
+            const safeDesc = (currentProduct.desc || '').substring(0, 145);
+            document.getElementById('metaDescription').setAttribute('content', `${currentProduct.name} - ${safeDesc}... Clinically vetted by Dr. Rana Arham Ali (DVM).`);
+            document.getElementById('ogTitle').setAttribute('content', `${currentProduct.name} | Dr. Rana Arham Ali Pet Shop`);
+            document.getElementById('ogDesc').setAttribute('content', `${safeDesc}... WhatsApp Orders: +92 336 5024014`);
+            if (currentProduct.image) {
+                document.getElementById('ogImage').setAttribute('content', currentProduct.image);
+            }
+
+            renderProductShowcase();
+            renderRelatedProducts(inventory);
+        }
+
+        function renderProductShowcase() {
+            const container = document.getElementById('productDetailContainer');
+            const p = currentProduct;
+
+            const isOutOfStock = p.status === 'out-of-stock';
+            const categoryLabels = getCategoryLabels();
+            const catName = categoryLabels[p.category] || p.category;
+
+            const imageHtml = p.image 
+                ? `<img src="${p.image}" alt="${p.name}">`
+                : `<span class="detail-large-icon">${p.icon || '🐾'}</span>`;
+
+            // Variant Options
+            let variantsHtml = '';
+            let activePrice = p.price || 0;
+            let activeLabel = 'Standard';
+
+            if (p.variants && p.variants.length > 0) {
+                const initialVar = p.variants[selectedVariantIndex] || p.variants[0];
+                activePrice = initialVar.price;
+                activeLabel = initialVar.label || initialVar.size || 'Standard';
+
+                const chips = p.variants.map((v, idx) => {
+                    const vLabel = v.label || v.size || 'Standard';
+                    const safeTitle = vLabel.replace(/"/g, '&quot;');
+                    const isActive = idx === selectedVariantIndex ? 'active' : '';
+                    return `
+                        <button type="button" 
+                                class="variant-chip-btn ${isActive}" 
+                                onclick="chooseDetailVariant(${idx})"
+                                title="${safeTitle}">
+                            <span class="chip-radio"></span>
+                            <span>${vLabel}</span>
+                            <span class="chip-price-badge">PKR ${Number(v.price).toLocaleString()}</span>
+                        </button>
+                    `;
+                }).join('');
+
+                variantsHtml = `
+                    <div class="variant-chips-wrap detail-options-container" id="detailVariantWrap">
+                        <div class="variant-chips-header">
+                            <span>Available Pack Sizes / Flavors:</span>
+                            <span class="variant-active-name" id="detailActiveLabel">${activeLabel}</span>
+                        </div>
+                        <div class="variant-chips-list">
+                            ${chips}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Clinical Information Accordions (Only displayed if entered by the Doctor in Admin)
+            let accordionsHtml = '';
+
+            if (p.indications && p.indications.trim()) {
+                accordionsHtml += `
+                    <div class="detail-accordion-item">
+                        <div class="detail-accordion-header" onclick="toggleAccordion(this)">
+                            <span>🩺 Veterinary Indications & Clinical Benefits</span>
+                            <span>▾</span>
+                        </div>
+                        <div class="detail-accordion-body">
+                            ${p.indications.replace(/\n/g, '<br>')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (p.feedingGuide && p.feedingGuide.trim()) {
+                accordionsHtml += `
+                    <div class="detail-accordion-item">
+                        <div class="detail-accordion-header" onclick="toggleAccordion(this)">
+                            <span>🥣 Feeding Guidelines & Daily Portions</span>
+                            <span>▾</span>
+                        </div>
+                        <div class="detail-accordion-body" style="display: none;">
+                            ${p.feedingGuide.replace(/\n/g, '<br>')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (p.storageInfo && p.storageInfo.trim()) {
+                accordionsHtml += `
+                    <div class="detail-accordion-item">
+                        <div class="detail-accordion-header" onclick="toggleAccordion(this)">
+                            <span>📦 Storage & Safe Handling</span>
+                            <span>▾</span>
+                        </div>
+                        <div class="detail-accordion-body" style="display: none;">
+                            ${p.storageInfo.replace(/\n/g, '<br>')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            const clinicalAccordionSection = accordionsHtml ? `<div class="detail-accordion">${accordionsHtml}</div>` : '';
+
+            container.innerHTML = `
+                <!-- Media Column -->
+                <div class="product-media-column">
+                    <div class="detail-main-img-box">
+                        ${imageHtml}
+                        <span class="detail-badge-ribbon">${isOutOfStock ? 'Out of Stock' : '● In Stock'}</span>
+                    </div>
+
+                    <div class="product-trust-strip">
+                        <div>
+                            <span>🛡️ Genuine</span>
+                            <strong>100% Authentic</strong>
+                        </div>
+                        <div>
+                            <span>🚚 Fast Delivery</span>
+                            <strong>ISB / RWP & Nationwide</strong>
+                        </div>
+                        <div>
+                            <span>🩺 Doctor Vetted</span>
+                            <strong>Clinical Quality</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Column -->
+                <div class="product-info-column">
+                    <span class="detail-category-tag">${catName}</span>
+                    <h1 class="detail-product-title">${p.name}</h1>
+                    <div class="detail-vet-stamp">
+                        <span>✓ Clinically Evaluated & Recommended by Dr. Rana H. M. Arham Ali (DVM)</span>
+                    </div>
+
+                    <div class="detail-price-box">
+                        <span class="detail-price-current" id="detailPriceDisplay">PKR ${Number(activePrice).toLocaleString()}</span>
+                        <span class="detail-price-note">All taxes included • Cash on Delivery / Bank Transfer</span>
+                    </div>
+
+                    <p class="detail-desc-text">${p.desc}</p>
+
+                    ${variantsHtml}
+
+                    <!-- Quantity & Action Row -->
+                    <div class="detail-qty-action-row">
+                        <div class="detail-qty-box">
+                            <button type="button" class="detail-qty-btn" onclick="adjustDetailQty(-1)">-</button>
+                            <input type="text" id="detailQtyInput" class="detail-qty-input" value="1" readonly>
+                            <button type="button" class="detail-qty-btn" onclick="adjustDetailQty(1)">+</button>
+                        </div>
+
+                        ${isOutOfStock 
+                            ? `<button class="btn-detail-cart" disabled style="opacity:0.5; cursor:not-allowed;">Currently Out of Stock</button>`
+                            : `<button class="btn-detail-cart" onclick="addCurrentProductToCart()">🛒 Add to Cart</button>`
+                        }
+
+                        <a href="javascript:void(0)" onclick="orderDirectOnWhatsApp()" class="btn-detail-whatsapp">
+                            💬 Order via WhatsApp
+                        </a>
+                    </div>
+
+                    <!-- Clinical Information Accordions (Doctor Managed) -->
+                    ${clinicalAccordionSection}
+                </div>
+            `;
+        }
+
+        // Accordion Toggle
+        function toggleAccordion(header) {
+            const body = header.nextElementSibling;
+            const arrow = header.querySelector('span:last-child');
+            if (body.style.display === 'none') {
+                body.style.display = 'block';
+                arrow.innerText = '▴';
+            } else {
+                body.style.display = 'none';
+                arrow.innerText = '▾';
+            }
+        }
+
+        // Adjust Detail Quantity
+        function adjustDetailQty(delta) {
+            selectedQuantity += delta;
+            if (selectedQuantity < 1) selectedQuantity = 1;
+            if (selectedQuantity > 20) selectedQuantity = 20;
+            const input = document.getElementById('detailQtyInput');
+            if (input) input.value = selectedQuantity;
+        }
+
+        // Choose Variant
+        function chooseDetailVariant(idx) {
+            selectedVariantIndex = idx;
+            const p = currentProduct;
+            if (!p || !p.variants || !p.variants[idx]) return;
+
+            const chosen = p.variants[idx];
+            const label = chosen.label || chosen.size || 'Standard';
+
+            // 1. Update Chips
+            const wrap = document.getElementById('detailVariantWrap');
+            if (wrap) {
+                const chips = wrap.querySelectorAll('.variant-chip-btn');
+                chips.forEach((c, i) => {
+                    if (i === idx) c.classList.add('active');
+                    else c.classList.remove('active');
+                });
+            }
+
+            // 2. Update Label
+            const labelElem = document.getElementById('detailActiveLabel');
+            if (labelElem) labelElem.innerText = label;
+
+            // 3. Update Price
+            const priceElem = document.getElementById('detailPriceDisplay');
+            if (priceElem) {
+                priceElem.innerText = `PKR ${Number(chosen.price).toLocaleString()}`;
+                priceElem.style.transition = 'transform 0.15s ease, color 0.15s ease';
+                priceElem.style.color = '#00b074';
+                priceElem.style.transform = 'scale(1.06)';
+                setTimeout(() => {
+                    priceElem.style.color = 'var(--navy-dark)';
+                    priceElem.style.transform = 'scale(1)';
+                }, 180);
+            }
+        }
+
+        // Add Product from Detail View to Cart
+        function addCurrentProductToCart() {
+            const p = currentProduct;
+            if (!p) return;
+
+            let title = p.name;
+            let price = p.price || 0;
+
+            if (p.variants && p.variants.length > 0) {
+                const chosen = p.variants[selectedVariantIndex] || p.variants[0];
+                const label = chosen.label || chosen.size || 'Standard';
+                title = `${p.name} (${label})`;
+                price = chosen.price;
+            }
+
+            for (let i = 0; i < selectedQuantity; i++) {
+                addToCart(title, price);
+            }
+
+            openCart();
+        }
+
+        // Direct WhatsApp order for this single product
+        function orderDirectOnWhatsApp() {
+            const p = currentProduct;
+            if (!p) return;
+
+            let variantText = '';
+            let price = p.price || 0;
+
+            if (p.variants && p.variants.length > 0) {
+                const chosen = p.variants[selectedVariantIndex] || p.variants[0];
+                const label = chosen.label || chosen.size || 'Standard';
+                variantText = `\n🏷️ *Pack Size / Flavor:* ${label}`;
+                price = chosen.price;
+            }
+
+            const total = price * selectedQuantity;
+
+            const msg = 
+`🛍️ *DIRECT PRODUCT ORDER / INQUIRY* 🛍️
+
+📦 *Product:* ${p.name}${variantText}
+🔢 *Quantity:* ${selectedQuantity}
+💰 *Total Price:* PKR ${total.toLocaleString()}
+
+Hello Dr. Arham, I want to order this product from your veterinary clinic store. Please confirm availability and delivery time.`;
+
+            window.open(`https://wa.me/${DOCTOR_WHATSAPP}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        // Render Related Products
+        function renderRelatedProducts(inventory) {
+            const grid = document.getElementById('relatedProductsGrid');
+            if (!grid) return;
+
+            // Find items from same category, excluding current product
+            let related = inventory.filter(item => item.id !== currentProduct.id && item.category === currentProduct.category);
+            
+            // If less than 3, add other items from inventory
+            if (related.length < 3) {
+                const others = inventory.filter(item => item.id !== currentProduct.id && item.category !== currentProduct.category);
+                related = related.concat(others);
+            }
+
+            // Pick up to 4 items
+            const toShow = related.slice(0, 4);
+            const categoryLabels = getCategoryLabels();
+
+            grid.innerHTML = '';
+            toShow.forEach(p => {
+                const isOutOfStock = p.status === 'out-of-stock';
+                const catName = categoryLabels[p.category] || p.category;
+
+                const imageHtml = p.image 
+                    ? `<div class="product-img-box" style="cursor: pointer;" onclick="window.location.href='product.html?id=${p.id}'"><img src="${p.image}" alt="${p.name}"></div>`
+                    : `<div class="product-img-box" style="cursor: pointer;" onclick="window.location.href='product.html?id=${p.id}'"><span class="placeholder-icon">${p.icon || '🐾'}</span></div>`;
+
+                let priceText = `PKR ${Number(p.price || 0).toLocaleString()}`;
+                let optionsNote = '';
+                if (p.variants && p.variants.length > 0) {
+                    priceText = `PKR ${Number(p.variants[0].price).toLocaleString()}`;
+                    optionsNote = `<div style="font-size: 0.74rem; color: var(--teal-surgical); font-weight: 700; margin-top: 4px;">${p.variants.length} Flavors / Sizes Available</div>`;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div>
+                        ${imageHtml}
+                        <span class="product-badge">${catName}</span>
+                        <h4 class="product-title" style="cursor: pointer;" onclick="window.location.href='product.html?id=${p.id}'">${p.name}</h4>
+                        <p class="product-description">${(p.desc || '').substring(0, 75)}...</p>
+                        ${optionsNote}
+                    </div>
+                    <div class="product-footer">
+                        <span class="product-price">${priceText}</span>
+                        <a href="product.html?id=${p.id}" class="btn-secondary-action" style="padding: 7px 12px; font-size: 0.8rem; text-decoration: none;">
+                            View Details ➔
+                        </a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Cart State & Functions
+        function getCart() {
+            const saved = localStorage.getItem('vet_cart');
+            return saved ? JSON.parse(saved) : [];
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('vet_cart', JSON.stringify(cart));
+            updateCartUI();
+        }
+
+        function addToCart(title, price) {
+            const cart = getCart();
+            const existingIndex = cart.findIndex(item => item.title === title);
+
+            if (existingIndex > -1) {
+                cart[existingIndex].qty += 1;
+            } else {
+                cart.push({ title, price, qty: 1 });
+            }
+
+            saveCart(cart);
+        }
+
+        function changeQty(index, delta) {
+            const cart = getCart();
+            if (!cart[index]) return;
+
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            saveCart(cart);
+        }
+
+        function removeFromCart(index) {
+            const cart = getCart();
+            cart.splice(index, 1);
+            saveCart(cart);
+        }
+
+        function updateCartUI() {
+            const cart = getCart();
+            const countElem = document.getElementById('cartCount');
+            const listElem = document.getElementById('cartItemsList');
+            const totalElem = document.getElementById('cartTotal');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            if (countElem) countElem.innerText = totalItems;
+
+            if (!listElem || !totalElem) return;
+
+            if (cart.length === 0) {
+                listElem.innerHTML = '<p class="cart-empty-text">Your cart is currently empty.</p>';
+                totalElem.innerText = 'PKR 0';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                const subtotal = item.price * item.qty;
+                total += subtotal;
+                html += `
+                    <div class="cart-item-row">
+                        <div>
+                            <strong>${item.title}</strong><br>
+                            <small style="color: #64748b;">PKR ${item.price.toLocaleString()} each</small>
+                            <div class="cart-qty-ctrl">
+                                <button class="cart-qty-btn" onclick="changeQty(${index}, -1)">-</button>
+                                <span style="font-weight:700; font-size:0.9rem;">${item.qty}</span>
+                                <button class="cart-qty-btn" onclick="changeQty(${index}, 1)">+</button>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <strong>PKR ${subtotal.toLocaleString()}</strong><br>
+                            <button onclick="removeFromCart(${index})" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:1.1rem; padding: 4px;">&times;</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            listElem.innerHTML = html;
+            totalElem.innerText = 'PKR ' + total.toLocaleString();
+        }
+
+        function openCart() {
+            document.getElementById('cartOverlay').classList.add('active');
+        }
+
+        function closeCart() {
+            document.getElementById('cartOverlay').classList.remove('active');
+        }
+
+        function checkoutViaWhatsApp() {
+            const cart = getCart();
+            if (cart.length === 0) {
+                alert('Your cart is empty. Please add items before checking out.');
+                return;
+            }
+
+            const name = document.getElementById('custName').value.trim();
+            const phone = document.getElementById('custPhone').value.trim();
+            const address = document.getElementById('custAddress').value.trim();
+            const payment = document.getElementById('custPayment').value;
+
+            if (!name || !phone || !address) {
+                alert('Please enter your Name, Phone Number, and Delivery Address before proceeding to WhatsApp.');
+                return;
+            }
+
+            let itemsList = '';
+            let total = 0;
+            cart.forEach(item => {
+                const subtotal = item.price * item.qty;
+                total += subtotal;
+                itemsList += `• ${item.title} (x${item.qty}) - PKR ${subtotal.toLocaleString()}\n`;
+            });
+
+            const message = 
+`📦 *NEW PET SHOP ORDER* 📦
+
+👤 *Customer Name:* ${name}
+📞 *Customer Phone:* ${phone}
+📍 *Delivery Address:* ${address}
+💳 *Payment Method:* ${payment}
+
+🛒 *Ordered Items:*
+${itemsList}
+💰 *Total Amount:* PKR ${total.toLocaleString()}
+
+Please confirm product availability and dispatch details.`;
+
+            window.open(`https://wa.me/${DOCTOR_WHATSAPP}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // Mobile Navigation Toggle
+        function toggleMobileNav() {
+            const nav = document.getElementById('navLinks');
+            const toggle = document.getElementById('mobileNavToggle');
+            if (nav && toggle) {
+                nav.classList.toggle('mobile-open');
+                toggle.classList.toggle('active');
+                document.body.style.overflow = nav.classList.contains('mobile-open') ? 'hidden' : '';
+            }
+        }
+
+        function closeMobileNav() {
+            const nav = document.getElementById('navLinks');
+            const toggle = document.getElementById('mobileNavToggle');
+            if (nav && toggle) {
+                nav.classList.remove('mobile-open');
+                toggle.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function toggleWaPopup() {
+            const popup = document.getElementById('waPopup');
+            popup.classList.toggle('active');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadProductDetail();
+            updateCartUI();
+        });
+    </script>
+</body>
+</html>

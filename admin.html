@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Dr. Rana H. M. Arham Ali (DVM)</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .admin-page {
+            max-width: 1100px;
+            margin: 40px auto 80px;
+            padding: 0 20px;
+        }
+        .admin-top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .admin-top-nav h1 {
+            font-size: 1.8rem;
+            color: var(--navy-dark);
+        }
+        .admin-box {
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 35px;
+        }
+        .admin-box h2 {
+            font-size: 1.25rem;
+            color: var(--navy-deep);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+        .grid-full {
+            grid-column: span 2;
+        }
+        .inv-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .inv-table th, .inv-table td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+        .inv-table th {
+            background: var(--bg-light);
+            color: var(--navy-dark);
+            font-weight: 700;
+        }
+        .table-thumb-img {
+            width: 52px;
+            height: 52px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .badge-stock {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: var(--radius-full);
+            display: inline-block;
+        }
+        .badge-stock.in-stock {
+            background: #dcfce7;
+            color: #15803d;
+        }
+        .badge-stock.out-of-stock {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+        .btn-status-toggle {
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            color: var(--text-body);
+            padding: 5px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.78rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .btn-status-toggle:hover {
+            border-color: var(--medical-blue);
+            color: var(--medical-blue);
+        }
+        .btn-delete-row {
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-left: 6px;
+        }
+        .btn-delete-row:hover {
+            background: #dc2626;
+        }
+        /* Lock screen gate */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10, 25, 47, 0.96);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .login-card {
+            background: var(--surface);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+        }
+        @media (max-width: 600px) {
+            .form-grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .grid-full {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Security Gate -->
+    <div class="login-overlay" id="loginGate">
+        <div class="login-card">
+            <div class="brand-crest" style="margin: 0 auto 16px;">VET</div>
+            <h3 style="color: var(--navy-dark); margin-bottom: 8px;">Doctor Admin Access</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">
+                Enter administrative PIN to manage store catalog.
+            </p>
+            <input type="password" id="passPin" class="form-input" placeholder="Enter PIN (Default: 1234)" style="text-align: center; font-size: 1.15rem; letter-spacing: 3px; margin-bottom: 14px;">
+            <button onclick="unlockDashboard()" class="btn-primary-action" style="width: 100%;">Unlock Dashboard</button>
+            <p id="authErrorMsg" style="color: #ef4444; font-size: 0.82rem; margin-top: 10px; display: none;">Incorrect PIN. Please re-enter.</p>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Area -->
+    <div class="admin-page">
+        <div class="admin-top-nav">
+            <div>
+                <h1>Store & Inventory Manager</h1>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Dr. Rana H. M. Arham Ali • Dedicated Clinical Practice Inventory</p>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="shop.html" target="_blank" class="btn-secondary-action">Open Live Store ↗</a>
+                <a href="index.html" class="btn-secondary-action">Home Profile</a>
+                <button onclick="resetToDefaults()" class="btn-secondary-action" style="cursor: pointer; color: #b91c1c;">Reset Default Catalog</button>
+                <button onclick="lockDashboard()" class="btn-secondary-action" style="cursor: pointer;">Lock Portal</button>
+            </div>
+        </div>
+
+        <!-- Create Product Card -->
+        <div class="admin-box" id="productFormBox">
+            <h2 id="formTitle">Add New Product to Store</h2>
+            <form id="createProductForm" onsubmit="saveNewProduct(event)">
+                <input type="hidden" id="editProductId" value="">
+                <div class="form-grid-2">
+                    <div>
+                        <label class="form-label">Product Name / Title</label>
+                        <input type="text" id="itemName" class="form-input" placeholder="e.g., Royal Canin Gastrointestinal Wet Pouches" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Category</label>
+                        <select id="itemCategory" class="form-select" required>
+                            <!-- Populated dynamically from getStoreCategories() -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Base / Starting Price (PKR)</label>
+                        <input type="number" id="itemPrice" class="form-input" placeholder="e.g., 3200" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Initial Stock Status</label>
+                        <select id="itemStock" class="form-select" required>
+                            <option value="in-stock">● In Stock (Green)</option>
+                            <option value="out-of-stock">● Out of Stock (Red)</option>
+                        </select>
+                    </div>
+
+                    <!-- Commercial Variants: Pack Sizes, Flavors & Sub-Options -->
+                    <div class="grid-full variant-builder-box">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                            <div>
+                                <label class="form-label" style="margin-bottom: 2px;">Pack Sizes, Flavors & Option Pricing (Commercial Variants)</label>
+                                <small style="color: var(--text-muted); font-size: 0.8rem;">
+                                    Add different sizes (e.g. 500g, 1 kg, 10 kg) or flavors (e.g. Tender Chicken, Salmon & Tuna) with their individual prices.
+                                </small>
+                            </div>
+                            <button type="button" class="btn-status-toggle" onclick="addVariantInputRow()" style="background: var(--surface); border-color: #00b074; color: #00b074; font-weight: 700; padding: 7px 14px; font-size: 0.82rem;">
+                                + Add Size / Flavor Option
+                            </button>
+                        </div>
+
+                        <!-- Dynamic container for variant rows -->
+                        <div id="variantRowsContainer" style="display: flex; flex-direction: column; gap: 10px;">
+                            <!-- Dynamic rows are inserted here -->
+                        </div>
+                        <small style="color: var(--text-muted); font-size: 0.76rem; display: block; margin-top: 8px;">
+                            💡 Note: If no sub-options are added, this product will be listed as a single product at the Base Price above.
+                        </small>
+                    </div>
+
+                    <div class="grid-full">
+                        <label class="form-label">Product Image (File or Camera Photo)</label>
+                        <input type="file" id="itemPhoto" class="form-input" accept="image/*">
+                        <small style="color: var(--text-muted); font-size: 0.78rem;">Images are auto-compressed to preserve speed and browser storage.</small>
+                    </div>
+                    <div class="grid-full">
+                        <label class="form-label">Product Overview / Main Description</label>
+                        <textarea id="itemDesc" class="form-input" rows="3" placeholder="Add veterinary guidance, feeding instructions, or key benefits..." required></textarea>
+                    </div>
+
+                    <!-- Doctor-Controlled Clinical Accordion Inputs -->
+                    <div class="grid-full" style="background: #f8fafc; padding: 20px; border-radius: var(--radius-md); border: 1.5px solid var(--border-color); margin-top: 6px;">
+                        <h4 style="color: var(--navy-dark); margin-bottom: 4px; font-size: 0.95rem;">🩺 Product Detail Clinical Sections (Controlled by You)</h4>
+                        <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 16px;">
+                            Only sections you write below will appear on the product's dedicated page. Leave any of them empty if you do not want it displayed.
+                        </p>
+
+                        <div style="display: flex; flex-direction: column; gap: 14px;">
+                            <div>
+                                <label class="form-label" style="font-size: 0.84rem;">1. Veterinary Indications & Clinical Benefits (Optional)</label>
+                                <textarea id="itemIndications" class="form-input" rows="2" placeholder="Write clinical indications, targeted health benefits, or doctor advice..."></textarea>
+                            </div>
+                            <div>
+                                <label class="form-label" style="font-size: 0.84rem;">2. Feeding Guidelines & Daily Portions (Optional)</label>
+                                <textarea id="itemFeeding" class="form-input" rows="2" placeholder="Write daily gram portions, body weight ratio, or transition instructions..."></textarea>
+                            </div>
+                            <div>
+                                <label class="form-label" style="font-size: 0.84rem;">3. Storage & Safe Handling Precautions (Optional)</label>
+                                <textarea id="itemStorage" class="form-input" rows="2" placeholder="Write storage temperature, resealing instructions, or shelf life notes..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid-full" style="display: flex; gap: 10px; margin-top: 10px;">
+                        <button type="submit" id="submitProductBtn" class="btn-primary-action" style="flex: 1; font-size: 1rem;">Upload & Publish to Store ➔</button>
+                        <button type="button" id="cancelEditBtn" onclick="cancelEditing()" class="btn-secondary-action" style="display: none; padding: 12px 20px; cursor: pointer;">Cancel Edit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Store Categories Manager Card -->
+        <div class="admin-box" id="categoryManagerBox">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+                <h2 style="border: none; margin: 0; padding: 0;">Store Categories Manager</h2>
+                <span style="font-size: 0.82rem; color: var(--text-muted);">Create new product categories that automatically appear in your Pet Shop</span>
+            </div>
+
+            <!-- Add Category Inline Form -->
+            <form id="createCategoryForm" onsubmit="saveNewCategory(event)" style="background: #f8fafc; padding: 18px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 24px;">
+                <div style="display: grid; grid-template-columns: 2fr 1fr auto; gap: 14px; align-items: flex-end;">
+                    <div>
+                        <label class="form-label">New Category Name</label>
+                        <input type="text" id="newCatName" class="form-input" placeholder="e.g., Supplements & Vitamins, Puppy Care, Dental" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Icon / Emoji (Optional)</label>
+                        <input type="text" id="newCatIcon" class="form-input" placeholder="e.g., 💊 or 🐶 or ✨" value="🐾">
+                    </div>
+                    <div>
+                        <button type="submit" class="btn-primary-action" style="padding: 10px 18px; white-space: nowrap; font-size: 0.88rem;">
+                            + Add Category
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Active Categories List -->
+            <div>
+                <h4 style="font-size: 0.92rem; color: var(--navy-dark); margin-bottom: 12px;">Active Pet Shop Categories (<span id="catCountDisplay">0</span>)</h4>
+                <div id="categoryCardsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px;">
+                    <!-- Injected dynamically by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory List -->
+        <div class="admin-box">
+            <h2>Current Store Inventory (<span id="totalItemsCount">0</span>)</h2>
+            <div style="overflow-x: auto;">
+                <table class="inv-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Product & Options</th>
+                            <th>Category</th>
+                            <th>Price (PKR)</th>
+                            <th>Stock Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventoryRows">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const MASTER_PIN = "1234";
+
+        const defaultProducts = [
+            {
+                id: 1,
+                name: "Royal Canin Feline Health Nutrition",
+                category: "cat-food",
+                price: 3850,
+                status: "in-stock",
+                desc: "Scientifically formulated for adult cats to promote optimal coat condition, urinary tract health, and easy digestion.",
+                icon: "🐱",
+                variants: [
+                    { label: "400g Pouch", size: "400g Pouch", price: 1650 },
+                    { label: "1.5 kg Bag", size: "1.5 kg Bag", price: 3850 },
+                    { label: "4 kg Bag", size: "4 kg Bag", price: 8900 }
+                ]
+            },
+            {
+                id: 2,
+                name: "Reflex Plus Mother & Baby Cat / Kitten Food",
+                category: "cat-food",
+                price: 3850,
+                status: "in-stock",
+                desc: "Nutrient-dense kibble enriched with DHA, essential fatty acids, and high protein to boost healthy kitten immune defense.",
+                icon: "🍼",
+                variants: [
+                    { label: "1.5 kg Bag", size: "1.5 kg Bag", price: 3850 },
+                    { label: "3 kg Bag", size: "3 kg Bag", price: 7200 },
+                    { label: "15 kg Breeder Pack", size: "15 kg Breeder Pack", price: 26500 }
+                ]
+            },
+            {
+                id: 3,
+                name: "Royal Canin Maxi Adult Complete Dog Food",
+                category: "dog-food",
+                price: 6800,
+                status: "in-stock",
+                desc: "Veterinary-approved balanced nutrition for medium & large adult dogs, supporting joint mobility and gut microflora.",
+                icon: "🐕",
+                variants: [
+                    { label: "3 kg Bag", size: "3 kg Bag", price: 6800 },
+                    { label: "10 kg Bag", size: "10 kg Bag", price: 18900 },
+                    { label: "15 kg Bag", size: "15 kg Bag", price: 26500 }
+                ]
+            },
+            {
+                id: 4,
+                name: "Reflex Plus High-Protein Puppy Growth Food",
+                category: "dog-food",
+                price: 4950,
+                status: "in-stock",
+                desc: "High-protein formula enriched with vitamins, minerals, and calcium for robust bone, muscular, and brain development.",
+                icon: "🐶",
+                variants: [
+                    { label: "3 kg Bag", size: "3 kg Bag", price: 4950 },
+                    { label: "15 kg Bag", size: "15 kg Bag", price: 21000 }
+                ]
+            },
+            {
+                id: 5,
+                name: "Reflex Plus Gourmet Cat Wet Pouches (85g)",
+                category: "wet-food",
+                price: 280,
+                status: "in-stock",
+                desc: "Tender meat chunks in savory gravy, providing essential hydration, moisture, and taurine for cardiovascular health.",
+                icon: "🐟",
+                variants: [
+                    { label: "🍗 Tender Chicken in Gravy (85g)", size: "🍗 Tender Chicken (85g)", price: 280 },
+                    { label: "🐟 Salmon & Tuna in Jelly (85g)", size: "🐟 Salmon & Tuna (85g)", price: 290 },
+                    { label: "🥩 Real Beef & Liver Gravy (85g)", size: "🥩 Beef & Liver (85g)", price: 295 },
+                    { label: "📦 Multipack Box (12 x 85g)", size: "Box of 12 x 85g", price: 3200 }
+                ]
+            },
+            {
+                id: 6,
+                name: "Pedigree Balanced Gravy Pouches Dog Food (100g)",
+                category: "wet-food",
+                price: 260,
+                status: "in-stock",
+                desc: "Succulent real meat chunks in jelly with balanced zinc and omega-6 fatty acids to nourish dog skin and coat.",
+                icon: "🥫",
+                variants: [
+                    { label: "🥩 Real Beef Chunks (100g)", size: "🥩 Beef Chunks (100g)", price: 260 },
+                    { label: "🍗 Grilled Chicken & Liver (100g)", size: "🍗 Grilled Chicken (100g)", price: 260 },
+                    { label: "📦 Value Box (12 x 100g)", size: "Multipack of 12 x 100g", price: 2800 }
+                ]
+            },
+            {
+                id: 7,
+                name: "Bentonite Odor-Lock Clumping Cat Litter",
+                category: "hygiene",
+                price: 1050,
+                status: "in-stock",
+                desc: "Low-dust, ultra-fast clumping natural clay with activated charcoal for superior ammonia odor control.",
+                icon: "✨",
+                variants: [
+                    { label: "5 Liters (Baby Powder Scent)", size: "5 L (Baby Powder)", price: 1050 },
+                    { label: "10 Liters (Activated Charcoal)", size: "10 L (Activated Charcoal)", price: 1850 },
+                    { label: "20 Liters (Ultra Clumping Duo)", size: "20 L (Ultra Clumping)", price: 3450 }
+                ]
+            },
+            {
+                id: 8,
+                name: "Ergonomic Panoramic Ventilated Pet Carrier",
+                category: "accessories",
+                price: 4600,
+                status: "in-stock",
+                desc: "Heavy-duty, secure-locking travel crate with 360-degree ventilation holes, ideal for veterinary clinic visits.",
+                icon: "🎒",
+                variants: [
+                    { label: "Standard Size (< 6kg Pets)", size: "Standard (< 6kg)", price: 4600 },
+                    { label: "Deluxe Large (< 12kg Pets)", size: "Deluxe (< 12kg)", price: 6200 }
+                ]
+            },
+            {
+                id: 9,
+                name: "Soft Breathable Post-Op Recovery Body Suit",
+                category: "accessories",
+                price: 1750,
+                status: "in-stock",
+                desc: "Comfortable cotton postoperative suit that prevents wound licking without the anxiety caused by plastic e-collars.",
+                icon: "🩺",
+                variants: [
+                    { label: "Small (Cats & Puppies < 3kg)", size: "Small (< 3kg)", price: 1750 },
+                    { label: "Medium (Cats / Dogs 3-6kg)", size: "Medium (3-6kg)", price: 1950 },
+                    { label: "Large (Dogs 7-15kg)", size: "Large (7-15kg)", price: 2250 },
+                    { label: "XL (Large Breeds > 15kg)", size: "XL (> 15kg)", price: 2650 }
+                ]
+            },
+            {
+                id: 10,
+                name: "Stainless Steel Undercoat Deshedding Comb",
+                category: "hygiene",
+                price: 1350,
+                status: "in-stock",
+                desc: "Gentle rounded-tip shedding tool to minimize hairballs and remove loose mats without irritating sensitive skin.",
+                icon: "🪮"
+            },
+            {
+                id: 11,
+                name: "Reflective Shock-Absorbing Dog Harness & Leash",
+                category: "accessories",
+                price: 2250,
+                status: "in-stock",
+                desc: "Durable nylon harness with padded chest plate and dual-clip leash for safe, stress-free dog walking and control.",
+                icon: "🦮",
+                variants: [
+                    { label: "Medium (Dogs 10-25kg)", size: "Medium (10-25kg)", price: 2250 },
+                    { label: "Large (Dogs 25-45kg)", size: "Large (25-45kg)", price: 2650 }
+                ]
+            }
+        ];
+
+        function unlockDashboard() {
+            const input = document.getElementById('passPin').value;
+            if (input === MASTER_PIN) {
+                document.getElementById('loginGate').style.display = 'none';
+                sessionStorage.setItem('vet_admin_auth', 'unlocked');
+            } else {
+                document.getElementById('authErrorMsg').style.display = 'block';
+            }
+        }
+
+        function lockDashboard() {
+            sessionStorage.removeItem('vet_admin_auth');
+            document.getElementById('loginGate').style.display = 'flex';
+            document.getElementById('passPin').value = '';
+        }
+
+        document.getElementById('passPin').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') unlockDashboard();
+        });
+
+        // Category Management System (Doctor Controlled)
+        const defaultCategories = [
+            { id: 'cat-food', name: 'Cat Nutrition', icon: '🐱' },
+            { id: 'dog-food', name: 'Dog Nutrition', icon: '🐶' },
+            { id: 'wet-food', name: 'Wet Food & Pouches', icon: '🥫' },
+            { id: 'hygiene', name: 'Litter & Hygiene', icon: '✨' },
+            { id: 'accessories', name: 'Accessories & Travel', icon: '🩺' }
+        ];
+
+        function getStoreCategories() {
+            const data = localStorage.getItem('vet_store_categories');
+            if (data) {
+                try {
+                    const parsed = JSON.parse(data);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                } catch(e) {}
+            }
+            localStorage.setItem('vet_store_categories', JSON.stringify(defaultCategories));
+            return defaultCategories;
+        }
+
+        function saveStoreCategories(cats) {
+            localStorage.setItem('vet_store_categories', JSON.stringify(cats));
+            renderCategoryManager();
+            populateCategoryDropdown();
+            renderInventoryTable();
+        }
+
+        function saveNewCategory(e) {
+            e.preventDefault();
+            const name = document.getElementById('newCatName').value.trim();
+            let icon = document.getElementById('newCatIcon').value.trim() || '🐾';
+            if (!name) return;
+
+            let slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            if (!slug) slug = 'cat-' + Date.now();
+
+            const cats = getStoreCategories();
+            if (cats.some(c => c.id === slug || c.name.toLowerCase() === name.toLowerCase())) {
+                alert(`Category "${name}" already exists.`);
+                return;
+            }
+
+            cats.push({ id: slug, name, icon });
+            saveStoreCategories(cats);
+
+            document.getElementById('createCategoryForm').reset();
+            document.getElementById('newCatIcon').value = '🐾';
+            alert(`Category "${name}" created! It is now live in your Pet Shop and upload forms.`);
+        }
+
+        function deleteCategory(catId) {
+            const cats = getStoreCategories();
+            const cat = cats.find(c => c.id === catId);
+            if (!cat) return;
+
+            const catalog = getCatalog();
+            const itemsInCat = catalog.filter(p => p.category === catId);
+
+            if (itemsInCat.length > 0) {
+                if (!confirm(`Warning: There are ${itemsInCat.length} products assigned to "${cat.name}". Deleting this category will reassign them to "Accessories & Travel". Proceed?`)) {
+                    return;
+                }
+                itemsInCat.forEach(p => { p.category = 'accessories'; });
+                saveCatalog(catalog);
+            } else {
+                if (!confirm(`Are you sure you want to delete the category "${cat.name}"?`)) {
+                    return;
+                }
+            }
+
+            const updated = cats.filter(c => c.id !== catId);
+            saveStoreCategories(updated);
+        }
+
+        function renderCategoryManager() {
+            const cats = getStoreCategories();
+            const catalog = getCatalog();
+            const grid = document.getElementById('categoryCardsGrid');
+            const countElem = document.getElementById('catCountDisplay');
+            if (countElem) countElem.innerText = cats.length;
+            if (!grid) return;
+
+            let html = '';
+            cats.forEach(c => {
+                const productCount = catalog.filter(p => p.category === c.id).length;
+                const isProtected = ['cat-food', 'dog-food', 'wet-food', 'hygiene', 'accessories'].includes(c.id);
+
+                html += `
+                    <div style="background: var(--surface); border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px 14px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 1.5rem;">${c.icon || '🐾'}</span>
+                            <div>
+                                <strong style="color: var(--navy-dark); font-size: 0.9rem; display: block;">${c.name}</strong>
+                                <small style="color: var(--text-muted); font-size: 0.76rem;">${productCount} item${productCount === 1 ? '' : 's'}</small>
+                            </div>
+                        </div>
+                        <div>
+                            ${!isProtected || cats.length > 5 ? `<button type="button" onclick="deleteCategory('${c.id}')" title="Delete category" style="background: none; border: none; color: #ef4444; font-size: 1.15rem; cursor: pointer; padding: 4px 6px;">✕</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+        }
+
+        function populateCategoryDropdown(selectedVal = '') {
+            const cats = getStoreCategories();
+            const select = document.getElementById('itemCategory');
+            if (!select) return;
+
+            const currentVal = selectedVal || select.value;
+            let html = '';
+            cats.forEach(c => {
+                html += `<option value="${c.id}">${c.icon || '🐾'} ${c.name}</option>`;
+            });
+            select.innerHTML = html;
+            if (currentVal && cats.some(c => c.id === currentVal)) {
+                select.value = currentVal;
+            }
+        }
+
+        // Dynamic Variant Row Functions (Commercial Pack Sizes & Flavors)
+        function addVariantInputRow(label = '', price = '') {
+            const container = document.getElementById('variantRowsContainer');
+            const row = document.createElement('div');
+            row.className = 'variant-input-row';
+            row.innerHTML = `
+                <div>
+                    <input type="text" class="form-input var-label-input" placeholder="Option Name / Pack Size / Flavor (e.g., 500g, 1 kg, Salmon & Tuna)" value="${label ? label.replace(/"/g, '&quot;') : ''}" required>
+                </div>
+                <div>
+                    <input type="number" class="form-input var-price-input" placeholder="Price (PKR) e.g., 950" value="${price || ''}" required min="0">
+                </div>
+                <div>
+                    <button type="button" class="btn-delete-row" onclick="removeVariantRow(this)" title="Remove option" style="padding: 7px 12px; margin: 0;">✕</button>
+                </div>
+            `;
+            container.appendChild(row);
+        }
+
+        function removeVariantRow(btn) {
+            const row = btn.closest('.variant-input-row');
+            if (row) row.remove();
+        }
+
+        function getCatalog() {
+            const data = localStorage.getItem('vet_store_inventory');
+            if (data) {
+                try {
+                    const parsed = JSON.parse(data);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        // Merge default variants into default items if missing
+                        parsed.forEach(item => {
+                            const def = defaultProducts.find(d => d.id === item.id);
+                            if (def && def.variants && (!item.variants || item.variants.length === 0)) {
+                                item.variants = def.variants;
+                            }
+                        });
+                        return parsed;
+                    }
+                } catch(e) {}
+            }
+            localStorage.setItem('vet_store_inventory', JSON.stringify(defaultProducts));
+            return defaultProducts;
+        }
+
+        function saveCatalog(items) {
+            localStorage.setItem('vet_store_inventory', JSON.stringify(items));
+            renderInventoryTable();
+        }
+
+        function resetToDefaults() {
+            if (confirm("Reset catalog back to standard veterinary products with all pack sizes and flavors? Any custom added items will be reset.")) {
+                saveCatalog(defaultProducts);
+            }
+        }
+
+        function renderInventoryTable() {
+            const items = getCatalog();
+            const tbody = document.getElementById('inventoryRows');
+            document.getElementById('totalItemsCount').innerText = items.length;
+
+            if (items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 35px;">No products published yet. Use the form above to add your first item.</td></tr>`;
+                return;
+            }
+
+            const cats = getStoreCategories();
+            const categoryLabels = {};
+            cats.forEach(c => { categoryLabels[c.id] = (c.icon ? c.icon + ' ' : '') + c.name; });
+
+            let html = '';
+            items.forEach((item, index) => {
+                const isAvailable = item.status === 'in-stock';
+                const badge = isAvailable 
+                    ? '<span class="badge-stock in-stock">● In Stock</span>' 
+                    : '<span class="badge-stock out-of-stock">● Out of Stock</span>';
+                const toggleActionText = isAvailable ? 'Mark Out of Stock' : 'Mark In Stock';
+
+                const imgDisplay = item.image 
+                    ? `<img src="${item.image}" class="table-thumb-img" alt="${item.name}">`
+                    : `<div class="table-thumb-img">${item.icon || '🐾'}</div>`;
+
+                // Display variants tags
+                let variantsTags = '';
+                if (item.variants && item.variants.length > 0) {
+                    const pills = item.variants.map(v => {
+                        const lbl = v.label || v.size || 'Standard';
+                        return `<span style="background: #e0f2fe; color: #0369a1; padding: 2px 7px; border-radius: 4px; font-size: 0.74rem; font-weight: 600; margin-right: 4px; display: inline-block; margin-top: 4px;">${lbl}: PKR ${Number(v.price).toLocaleString()}</span>`;
+                    }).join('');
+                    variantsTags = `<div style="margin-top: 6px;">${pills}</div>`;
+                }
+
+                // Price display with range if variants exist
+                let priceText = `<strong>PKR ${Number(item.price).toLocaleString()}</strong>`;
+                if (item.variants && item.variants.length > 1) {
+                    const prices = item.variants.map(v => Number(v.price));
+                    const minP = Math.min(...prices);
+                    const maxP = Math.max(...prices);
+                    priceText = `<strong>PKR ${minP.toLocaleString()} – ${maxP.toLocaleString()}</strong><br><small style="color: var(--teal-surgical); font-weight: 700;">${item.variants.length} Options Available</small>`;
+                }
+
+                html += `
+                    <tr>
+                        <td>${imgDisplay}</td>
+                        <td>
+                            <strong>${item.name}</strong><br>
+                            <small style="color: var(--text-muted);">${(item.desc || '').substring(0, 48)}...</small>
+                            ${variantsTags}
+                        </td>
+                        <td><span class="badge-cert" style="font-size: 0.72rem;">${categoryLabels[item.category] || item.category}</span></td>
+                        <td>${priceText}</td>
+                        <td>${badge}</td>
+                        <td>
+                            <button onclick="startEditItem(${index})" class="btn-status-toggle" style="background: #e0f2fe; color: #0284c7; border-color: #bae6fd; margin-right: 4px;">Edit Details</button>
+                            <button onclick="toggleStockStatus(${index})" class="btn-status-toggle">${toggleActionText}</button>
+                            <button onclick="deleteItem(${index})" class="btn-delete-row">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        // Start editing an existing product
+        function startEditItem(index) {
+            const catalog = getCatalog();
+            const item = catalog[index];
+            if (!item) return;
+
+            document.getElementById('editProductId').value = item.id;
+            document.getElementById('itemName').value = item.name || '';
+            populateCategoryDropdown(item.category);
+            document.getElementById('itemCategory').value = item.category || 'cat-food';
+            document.getElementById('itemPrice').value = item.price || '';
+            document.getElementById('itemStock').value = item.status || 'in-stock';
+            document.getElementById('itemDesc').value = item.desc || '';
+
+            // Load doctor-controlled clinical details
+            document.getElementById('itemIndications').value = item.indications || '';
+            document.getElementById('itemFeeding').value = item.feedingGuide || '';
+            document.getElementById('itemStorage').value = item.storageInfo || '';
+
+            // Rebuild variant rows
+            const container = document.getElementById('variantRowsContainer');
+            container.innerHTML = '';
+            if (item.variants && item.variants.length > 0) {
+                item.variants.forEach(v => {
+                    addVariantInputRow(v.label || v.size, v.price);
+                });
+            }
+
+            // Change UI to editing mode
+            document.getElementById('formTitle').innerText = `Edit Product: ${item.name}`;
+            document.getElementById('submitProductBtn').innerText = 'Save Changes & Update Product ➔';
+            document.getElementById('cancelEditBtn').style.display = 'inline-block';
+
+            document.getElementById('productFormBox').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function cancelEditing() {
+            document.getElementById('createProductForm').reset();
+            document.getElementById('editProductId').value = '';
+            document.getElementById('variantRowsContainer').innerHTML = '';
+            populateCategoryDropdown();
+            document.getElementById('formTitle').innerText = 'Add New Product to Store';
+            document.getElementById('submitProductBtn').innerText = 'Upload & Publish to Store ➔';
+            document.getElementById('cancelEditBtn').style.display = 'none';
+        }
+
+        // Image compression helper to prevent localStorage 5MB quota overflows
+        function compressImageFile(file, maxWidth, maxHeight, quality, callback) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > maxWidth) {
+                            height = Math.round((height * maxWidth) / width);
+                            width = maxWidth;
+                        }
+                    } else {
+                        if (height > maxHeight) {
+                            width = Math.round((width * maxHeight) / height);
+                            height = maxHeight;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+                    callback(compressedBase64);
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function saveNewProduct(e) {
+            e.preventDefault();
+            const editId = document.getElementById('editProductId').value;
+            const name = document.getElementById('itemName').value.trim();
+            const category = document.getElementById('itemCategory').value;
+            const price = document.getElementById('itemPrice').value;
+            const status = document.getElementById('itemStock').value;
+            const desc = document.getElementById('itemDesc').value.trim();
+            const indications = document.getElementById('itemIndications').value.trim();
+            const feedingGuide = document.getElementById('itemFeeding').value.trim();
+            const storageInfo = document.getElementById('itemStorage').value.trim();
+            const fileInput = document.getElementById('itemPhoto');
+
+            // Collect all dynamic variant rows
+            const variantRows = document.querySelectorAll('#variantRowsContainer .variant-input-row');
+            const variants = [];
+            variantRows.forEach(row => {
+                const labelInput = row.querySelector('.var-label-input');
+                const priceInput = row.querySelector('.var-price-input');
+                if (labelInput && priceInput) {
+                    const label = labelInput.value.trim();
+                    const varPrice = Number(priceInput.value);
+                    if (label && !isNaN(varPrice) && varPrice >= 0) {
+                        variants.push({
+                            label: label,
+                            size: label,
+                            price: varPrice
+                        });
+                    }
+                }
+            });
+
+            const effectivePrice = variants.length > 0 && (!price || Number(price) <= 0) 
+                ? variants[0].price 
+                : Number(price);
+
+            const finalizeSave = (imageData) => {
+                const catalog = getCatalog();
+
+                if (editId) {
+                    // Update existing product
+                    const prodIndex = catalog.findIndex(p => String(p.id) === String(editId));
+                    if (prodIndex > -1) {
+                        catalog[prodIndex].name = name;
+                        catalog[prodIndex].category = category;
+                        catalog[prodIndex].price = effectivePrice;
+                        catalog[prodIndex].status = status;
+                        catalog[prodIndex].desc = desc;
+                        catalog[prodIndex].variants = variants.length > 0 ? variants : undefined;
+                        catalog[prodIndex].indications = indications || undefined;
+                        catalog[prodIndex].feedingGuide = feedingGuide || undefined;
+                        catalog[prodIndex].storageInfo = storageInfo || undefined;
+
+                        if (imageData) {
+                            catalog[prodIndex].image = imageData;
+                        }
+
+                        saveCatalog(catalog);
+                        cancelEditing();
+                        alert(`"${name}" updated successfully!`);
+                        return;
+                    }
+                }
+
+                // Create new product
+                const newProduct = {
+                    id: Date.now(),
+                    name: name,
+                    category: category,
+                    price: effectivePrice,
+                    status: status,
+                    desc: desc,
+                    variants: variants.length > 0 ? variants : undefined,
+                    indications: indications || undefined,
+                    feedingGuide: feedingGuide || undefined,
+                    storageInfo: storageInfo || undefined,
+                    image: imageData || null,
+                    icon: "🐾"
+                };
+
+                catalog.unshift(newProduct);
+                saveCatalog(catalog);
+
+                cancelEditing();
+                alert(`"${name}" is now live on your store!`);
+            };
+
+            if (fileInput.files && fileInput.files[0]) {
+                compressImageFile(fileInput.files[0], 500, 500, 0.75, finalizeSave);
+            } else {
+                finalizeSave(null);
+            }
+        }
+
+        function toggleStockStatus(index) {
+            const catalog = getCatalog();
+            catalog[index].status = catalog[index].status === 'in-stock' ? 'out-of-stock' : 'in-stock';
+            saveCatalog(catalog);
+        }
+
+        function deleteItem(index) {
+            if (confirm("Are you sure you want to delete this product?")) {
+                const catalog = getCatalog();
+                catalog.splice(index, 1);
+                saveCatalog(catalog);
+            }
+        }
+
+        window.onload = function() {
+            if (sessionStorage.getItem('vet_admin_auth') === 'unlocked') {
+                document.getElementById('loginGate').style.display = 'none';
+            }
+            populateCategoryDropdown();
+            renderCategoryManager();
+            renderInventoryTable();
+        };
+    </script>
+</body>
+</html>

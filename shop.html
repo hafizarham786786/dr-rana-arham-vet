@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Shop & Clinical Nutrition | Dr. Rana H. M. Arham Ali (DVM RVMP ISB)</title>
+    <meta name="description" content="Authentic veterinary pet diets, kitten & puppy formulas, cat litter, and recovery essentials curated by Dr. Rana H. M. Arham Ali (DVM RVMP ISB). Fast delivery & WhatsApp checkout.">
+    <meta name="keywords" content="Pet Food Islamabad, Royal Canin Pakistan, Reflex Plus, Cat Litter, Dog Food, Veterinary Store, Dr Arham Ali">
+
+    <!-- Open Graph (WhatsApp, Facebook, iMessage) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://drhafizarhamali.com/shop.html">
+    <meta property="og:title" content="Pet Shop • Curated Clinical Pet Nutrition & Essentials">
+    <meta property="og:description" content="Authentic veterinary nutrition, prescription wet food, litter & recovery gear with direct WhatsApp ordering. Dr. Rana Arham Ali (DVM).">
+    <meta property="og:image" content="images/mockup_concept.jpg">
+    <meta property="og:site_name" content="Dr. Rana H. M. Arham Ali Pet Shop">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pet Shop • Curated Clinical Pet Diets & Supplies">
+    <meta name="twitter:description" content="100% authentic veterinary nutrition with fast dispatch and WhatsApp orders.">
+    <meta name="twitter:image" content="images/mockup_concept.jpg">
+
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Dedicated Pet Shop Theme Enhancements */
+        .shop-hero {
+            background: linear-gradient(135deg, #0a192f 0%, #0d2a4a 55%, #064e3b 100%);
+            padding: 68px 0 56px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: #ffffff;
+            position: relative;
+        }
+        .shop-hero h1 {
+            font-size: 2.6rem;
+            color: #ffffff;
+            margin-bottom: 12px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .shop-hero p {
+            color: #cbd5e1;
+            max-width: 680px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+        .shop-search-box {
+            max-width: 540px;
+            margin: 28px auto 0;
+            position: relative;
+        }
+        .shop-search-input {
+            width: 100%;
+            padding: 14px 22px 14px 48px;
+            border-radius: var(--radius-full);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            color: #ffffff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+        }
+        .shop-search-input::placeholder {
+            color: #94a3b8;
+        }
+        .shop-search-input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #00b074;
+            box-shadow: 0 0 0 4px rgba(0, 176, 116, 0.25);
+        }
+        .shop-search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 1.15rem;
+            pointer-events: none;
+        }
+        .category-filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 32px 0 28px;
+        }
+        .filter-chip {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #334155;
+            padding: 9px 20px;
+            border-radius: var(--radius-full);
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .filter-chip:hover {
+            border-color: #00b074;
+            color: #00b074;
+        }
+        .filter-chip.active {
+            background: #00b074;
+            color: #ffffff;
+            border-color: #00b074;
+            box-shadow: 0 3px 10px rgba(0, 176, 116, 0.3);
+        }
+        .shop-container {
+            padding: 20px 0 80px;
+        }
+        .product-img-box {
+            width: 100%;
+            height: 180px;
+            background: #f8fafc;
+            border-radius: var(--radius-sm);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        .product-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .product-img-box .placeholder-icon {
+            font-size: 3rem;
+            color: #94a3b8;
+        }
+        .cart-qty-ctrl {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .cart-qty-btn {
+            background: #e2e8f0;
+            border: none;
+            width: 26px;
+            height: 26px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cart-qty-btn:hover {
+            background: #cbd5e1;
+        }
+        .checkout-fields {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            margin-bottom: 14px;
+        }
+        .checkout-fields input, .checkout-fields select {
+            width: 100%;
+            padding: 9px 12px;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        .checkout-fields input:last-child, .checkout-fields select:last-child {
+            margin-bottom: 0;
+        }
+        .results-count-bar {
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Emergency & Announcement Ribbon -->
+    <div class="top-notice-bar">
+        <div class="container notice-content">
+            <div class="notice-item">
+                <span class="pulse-indicator"></span>
+                <strong>Direct Delivery:</strong> Curated Diets & Essentials Vetted by Dr. Rana Arham Ali
+            </div>
+            <div class="notice-item">
+                <span>Direct WhatsApp: <a href="https://wa.me/923365024014" target="_blank" style="color: #38bdf8; text-decoration: underline;">+92 336 5024014</a></span>
+                <span style="margin: 0 8px;">•</span>
+                <a href="index.html#booking" style="color: #38bdf8; text-decoration: underline;">Book Free Teleconsult</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <header class="main-header">
+        <div class="container nav-wrapper">
+            <a href="index.html" class="doctor-brand">
+                <div class="brand-crest">VET</div>
+                <div class="brand-details">
+                    <h2>Dr. Rana H. M. Arham Ali</h2>
+                    <span>DVM (RVMP ISB) • Clinical Surgery & Diagnostics</span>
+                </div>
+            </a>
+
+            <div class="nav-right-actions">
+                <button class="cart-icon-btn" onclick="openCart()" aria-label="Shopping Cart">
+                    <span>🛒 Cart</span>
+                    <span class="cart-counter" id="cartCount">0</span>
+                </button>
+                <button class="mobile-nav-toggle" id="mobileNavToggle" onclick="toggleMobileNav()" aria-label="Toggle navigation menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html" class="nav-link" onclick="closeMobileNav()">Doctor Profile</a>
+                <a href="index.html#how-it-works" class="nav-link" onclick="closeMobileNav()">How It Works</a>
+                <a href="index.html#specialties" class="nav-link" onclick="closeMobileNav()">Specialties</a>
+                <a href="index.html#booking" class="nav-link" onclick="closeMobileNav()">Free Teleconsult</a>
+                <a href="shop.html" class="nav-link active" onclick="closeMobileNav()">Pet Shop</a>
+                <div class="mobile-menu-help">
+                    <span style="font-size: 0.8rem; color: #065f46; font-weight: 600; display: block;">24/7 Veterinary Helpline</span>
+                    <a href="tel:+923365024014" style="color: #00b074; font-weight: 800; font-size: 1.05rem; text-decoration: none;">📞 +92 336 5024014</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Docked Quick-Action Sidebar -->
+    <aside class="docked-quick-panel">
+        <a href="index.html#booking" class="dock-btn">
+            <span class="dock-icon">📅</span>
+            <span>Free Visit</span>
+        </a>
+        <a href="https://wa.me/923365024014" target="_blank" class="dock-btn">
+            <span class="dock-icon">💬</span>
+            <span>WhatsApp</span>
+        </a>
+        <button onclick="openCart()" class="dock-btn">
+            <span class="dock-icon">🛒</span>
+            <span>Cart</span>
+        </button>
+        <a href="tel:+923365024014" class="dock-btn emergency">
+            <span class="dock-icon">🚨</span>
+            <span>24/7 SOS</span>
+        </a>
+    </aside>
+
+    <!-- Dedicated Pet Shop Hero -->
+    <section class="shop-hero">
+        <div class="container">
+            <div class="badge-row" style="justify-content: center;">
+                <span class="badge-cert">Clinically Vetted Selection</span>
+                <span class="badge-cert badge-gold">Canine & Feline Care</span>
+            </div>
+            <h1>Curated Pet Shop & Clinical Essentials</h1>
+            <p>Veterinarian-recommended dry kibble, balanced wet food pouches, premium clumping hygiene litters, and medical recovery accessories.</p>
+            
+            <!-- Live Instant Search Bar -->
+            <div class="shop-search-box">
+                <span class="shop-search-icon">🔍</span>
+                <input type="text" id="shopSearchInput" class="shop-search-input" placeholder="Search by brand, food, breed, or accessory (e.g. Royal Canin, Puppy, Litter)..." oninput="handleSearch()">
+            </div>
+
+            <!-- Category Filter Tabs -->
+            <div class="category-filter-bar" id="categoryFilterBar">
+                <!-- Dynamically rendered by JavaScript from getStoreCategories() -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Catalog Grid -->
+    <main class="shop-container">
+        <div class="container">
+            <div class="results-count-bar">
+                Showing <span id="showingCount">0</span> clinically approved products
+            </div>
+            <div class="products-grid" id="productGrid">
+                <!-- Dynamically populated from JavaScript & LocalStorage Sync -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Shopping Cart Drawer Overlay -->
+    <div class="cart-drawer-overlay" id="cartOverlay">
+        <div class="cart-drawer">
+            <div class="cart-header">
+                <h3>Your Shopping Cart</h3>
+                <button class="close-drawer-btn" onclick="closeCart()">&times;</button>
+            </div>
+            <div class="cart-items-list" id="cartItemsList">
+                <p class="cart-empty-text">Your cart is currently empty.</p>
+            </div>
+            <div class="cart-total-box">
+                <div class="cart-subtotal-row">
+                    <span>Total Amount:</span>
+                    <span id="cartTotal">PKR 0</span>
+                </div>
+
+                <!-- Customer Details for WhatsApp Order -->
+                <div class="checkout-fields">
+                    <input type="text" id="custName" placeholder="Your Full Name" required>
+                    <input type="tel" id="custPhone" placeholder="Contact WhatsApp / Mobile" required>
+                    <input type="text" id="custAddress" placeholder="Complete Delivery Address & City" required>
+                    <select id="custPayment">
+                        <option value="Cash on Delivery (COD)">Payment: Cash on Delivery (COD)</option>
+                        <option value="Direct Bank Transfer">Payment: Direct Bank Transfer</option>
+                        <option value="JazzCash / EasyPaisa">Payment: JazzCash / EasyPaisa</option>
+                    </select>
+                </div>
+
+                <button class="btn-checkout" onclick="checkoutViaWhatsApp()">Order via WhatsApp ➔</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clinical Footer -->
+    <footer class="footer-clinical">
+        <div class="container">
+            <div class="footer-columns">
+                <div class="footer-col">
+                    <h4>Dr. Rana H. M. Arham Ali (DVM)</h4>
+                    <p style="margin-bottom: 12px;">Committed to animal health and clinical welfare. All products curated to support everyday nutrition, hygiene, and safe veterinary travel.</p>
+                    <p>Free Clinical Tele-Consults: <strong>24/7 Available Online</strong></p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Doctor Profile & Credentials</a></li>
+                        <li><a href="index.html#how-it-works">How It Works</a></li>
+                        <li><a href="index.html#booking">Free Online Consultation</a></li>
+                        <li><a href="index.html#specialties">Clinical Specialties</a></li>
+                        <li><a href="shop.html">Pet Shop Catalog</a></li>
+                        <li><a href="admin.html" target="_blank" style="color: #94a3b8;">Admin Portal ↗</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Customer Care & Helpline</h4>
+                    <ul>
+                        <li><a href="https://wa.me/923365024014" target="_blank" style="color: #38bdf8;">WhatsApp Orders: +92 336 5024014</a></li>
+                        <li><a href="tel:+923365024014">Phone: +92 336 5024014</a></li>
+                        <li>Email: dr.arham.dvm@gmail.com</li>
+                        <li>Islamabad / Rawalpindi • Prompt Dispatch Across Pakistan</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>&copy; 2026 Dr. Rana H. M. Arham Ali (DVM). All rights reserved.</div>
+                <div>Curated Companion Animal Pet Shop & Healthcare Boutique</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Shop & Cart Logic -->
+    <script>
+        const DOCTOR_WHATSAPP = "923365024014";
+        let activeCategory = 'all';
+        let searchQuery = '';
+
+        // Dynamic Store Categories System (Synced with Admin)
+        const defaultCategories = [
+            { id: 'cat-food', name: 'Cat Nutrition', icon: '🐱' },
+            { id: 'dog-food', name: 'Dog Nutrition', icon: '🐶' },
+            { id: 'wet-food', name: 'Wet Food & Pouches', icon: '🥫' },
+            { id: 'hygiene', name: 'Litter & Hygiene', icon: '✨' },
+            { id: 'accessories', name: 'Accessories & Travel', icon: '🩺' }
+        ];
+
+        function getStoreCategories() {
+            const data = localStorage.getItem('vet_store_categories');
+            if (data) {
+                try {
+                    const parsed = JSON.parse(data);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                } catch(e) {}
+            }
+            localStorage.setItem('vet_store_categories', JSON.stringify(defaultCategories));
+            return defaultCategories;
+        }
+
+        function renderCategoryChips() {
+            const container = document.getElementById('categoryFilterBar');
+            if (!container) return;
+
+            const cats = getStoreCategories();
+            let html = `<button class="filter-chip ${activeCategory === 'all' ? 'active' : ''}" onclick="filterShop('all', this)">All Essentials</button>`;
+
+            cats.forEach(c => {
+                const isActive = activeCategory === c.id ? 'active' : '';
+                html += `<button class="filter-chip ${isActive}" onclick="filterShop('${c.id}', this)">${c.icon || '🐾'} ${c.name}</button>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Default clinically curated products for Dogs and Cats (with Pack Sizes, Flavors & Sub-Options)
+        const defaultProducts = [
+            {
+                id: 1,
+                name: "Royal Canin Feline Health Nutrition",
+                category: "cat-food",
+                price: 3850,
+                status: "in-stock",
+                desc: "Scientifically formulated for adult cats to promote optimal coat condition, urinary tract health, and easy digestion.",
+                icon: "🐱",
+                variants: [
+                    { label: "400g Pouch", size: "400g Pouch", price: 1650 },
+                    { label: "1.5 kg Bag", size: "1.5 kg Bag", price: 3850 },
+                    { label: "4 kg Bag", size: "4 kg Bag", price: 8900 }
+                ]
+            },
+            {
+                id: 2,
+                name: "Reflex Plus Mother & Baby Cat / Kitten Food",
+                category: "cat-food",
+                price: 3850,
+                status: "in-stock",
+                desc: "Nutrient-dense kibble enriched with DHA, essential fatty acids, and high protein to boost healthy kitten immune defense.",
+                icon: "🍼",
+                variants: [
+                    { label: "1.5 kg Bag", size: "1.5 kg Bag", price: 3850 },
+                    { label: "3 kg Bag", size: "3 kg Bag", price: 7200 },
+                    { label: "15 kg Breeder Pack", size: "15 kg Breeder Pack", price: 26500 }
+                ]
+            },
+            {
+                id: 3,
+                name: "Royal Canin Maxi Adult Complete Dog Food",
+                category: "dog-food",
+                price: 6800,
+                status: "in-stock",
+                desc: "Veterinary-approved balanced nutrition for medium & large adult dogs, supporting joint mobility and gut microflora.",
+                icon: "🐕",
+                variants: [
+                    { label: "3 kg Bag", size: "3 kg Bag", price: 6800 },
+                    { label: "10 kg Bag", size: "10 kg Bag", price: 18900 },
+                    { label: "15 kg Bag", size: "15 kg Bag", price: 26500 }
+                ]
+            },
+            {
+                id: 4,
+                name: "Reflex Plus High-Protein Puppy Growth Food",
+                category: "dog-food",
+                price: 4950,
+                status: "in-stock",
+                desc: "High-protein formula enriched with vitamins, minerals, and calcium for robust bone, muscular, and brain development.",
+                icon: "🐶",
+                variants: [
+                    { label: "3 kg Bag", size: "3 kg Bag", price: 4950 },
+                    { label: "15 kg Bag", size: "15 kg Bag", price: 21000 }
+                ]
+            },
+            {
+                id: 5,
+                name: "Reflex Plus Gourmet Cat Wet Pouches (85g)",
+                category: "wet-food",
+                price: 280,
+                status: "in-stock",
+                desc: "Tender meat chunks in savory gravy, providing essential hydration, moisture, and taurine for cardiovascular health.",
+                icon: "🐟",
+                variants: [
+                    { label: "🍗 Tender Chicken in Gravy (85g)", size: "🍗 Tender Chicken (85g)", price: 280 },
+                    { label: "🐟 Salmon & Tuna in Jelly (85g)", size: "🐟 Salmon & Tuna (85g)", price: 290 },
+                    { label: "🥩 Real Beef & Liver Gravy (85g)", size: "🥩 Beef & Liver (85g)", price: 295 },
+                    { label: "📦 Multipack Box (12 x 85g)", size: "Box of 12 x 85g", price: 3200 }
+                ]
+            },
+            {
+                id: 6,
+                name: "Pedigree Balanced Gravy Pouches Dog Food (100g)",
+                category: "wet-food",
+                price: 260,
+                status: "in-stock",
+                desc: "Succulent real meat chunks in jelly with balanced zinc and omega-6 fatty acids to nourish dog skin and coat.",
+                icon: "🥫",
+                variants: [
+                    { label: "🥩 Real Beef Chunks (100g)", size: "🥩 Beef Chunks (100g)", price: 260 },
+                    { label: "🍗 Grilled Chicken & Liver (100g)", size: "🍗 Grilled Chicken (100g)", price: 260 },
+                    { label: "📦 Value Box (12 x 100g)", size: "Multipack of 12 x 100g", price: 2800 }
+                ]
+            },
+            {
+                id: 7,
+                name: "Bentonite Odor-Lock Clumping Cat Litter",
+                category: "hygiene",
+                price: 1050,
+                status: "in-stock",
+                desc: "Low-dust, ultra-fast clumping natural clay with activated charcoal for superior ammonia odor control.",
+                icon: "✨",
+                variants: [
+                    { label: "5 Liters (Baby Powder Scent)", size: "5 L (Baby Powder)", price: 1050 },
+                    { label: "10 Liters (Activated Charcoal)", size: "10 L (Activated Charcoal)", price: 1850 },
+                    { label: "20 Liters (Ultra Clumping Duo)", size: "20 L (Ultra Clumping)", price: 3450 }
+                ]
+            },
+            {
+                id: 8,
+                name: "Ergonomic Panoramic Ventilated Pet Carrier",
+                category: "accessories",
+                price: 4600,
+                status: "in-stock",
+                desc: "Heavy-duty, secure-locking travel crate with 360-degree ventilation holes, ideal for veterinary clinic visits.",
+                icon: "🎒",
+                variants: [
+                    { label: "Standard Size (< 6kg Pets)", size: "Standard (< 6kg)", price: 4600 },
+                    { label: "Deluxe Large (< 12kg Pets)", size: "Deluxe (< 12kg)", price: 6200 }
+                ]
+            },
+            {
+                id: 9,
+                name: "Soft Breathable Post-Op Recovery Body Suit",
+                category: "accessories",
+                price: 1750,
+                status: "in-stock",
+                desc: "Comfortable cotton postoperative suit that prevents wound licking without the anxiety caused by plastic e-collars.",
+                icon: "🩺",
+                variants: [
+                    { label: "Small (Cats & Puppies < 3kg)", size: "Small (< 3kg)", price: 1750 },
+                    { label: "Medium (Cats / Dogs 3-6kg)", size: "Medium (3-6kg)", price: 1950 },
+                    { label: "Large (Dogs 7-15kg)", size: "Large (7-15kg)", price: 2250 },
+                    { label: "XL (Large Breeds > 15kg)", size: "XL (> 15kg)", price: 2650 }
+                ]
+            },
+            {
+                id: 10,
+                name: "Stainless Steel Undercoat Deshedding Comb",
+                category: "hygiene",
+                price: 1350,
+                status: "in-stock",
+                desc: "Gentle rounded-tip shedding tool to minimize hairballs and remove loose mats without irritating sensitive skin.",
+                icon: "🪮"
+            },
+            {
+                id: 11,
+                name: "Reflective Shock-Absorbing Dog Harness & Leash",
+                category: "accessories",
+                price: 2250,
+                status: "in-stock",
+                desc: "Durable nylon harness with padded chest plate and dual-clip leash for safe, stress-free dog walking and control.",
+                icon: "🦮",
+                variants: [
+                    { label: "Medium (Dogs 10-25kg)", size: "Medium (10-25kg)", price: 2250 },
+                    { label: "Large (Dogs 25-45kg)", size: "Large (25-45kg)", price: 2650 }
+                ]
+            }
+        ];
+
+        // Retrieve items synced from Admin or use default
+        function getStoreInventory() {
+            const stored = localStorage.getItem('vet_store_inventory');
+            if (stored) {
+                try {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        // Merge default variants into default items if missing
+                        parsed.forEach(item => {
+                            const def = defaultProducts.find(d => d.id === item.id);
+                            if (def && def.variants && (!item.variants || item.variants.length === 0)) {
+                                item.variants = def.variants;
+                            }
+                        });
+                        return parsed;
+                    }
+                } catch(e) {}
+            }
+            localStorage.setItem('vet_store_inventory', JSON.stringify(defaultProducts));
+            return defaultProducts;
+        }
+
+        // Active variant selection tracker per product
+        const selectedVariantMap = {};
+
+        // Switch active variant on a product card
+        function selectProductVariant(productId, variantIndex) {
+            selectedVariantMap[productId] = variantIndex;
+            const products = getStoreInventory();
+            const product = products.find(p => p.id === productId);
+            if (!product || !product.variants || !product.variants[variantIndex]) return;
+
+            const variant = product.variants[variantIndex];
+            const variantLabel = variant.label || variant.size || 'Standard';
+
+            // 1. Update chip visual state
+            const wrap = document.getElementById(`variant-wrap-${productId}`);
+            if (wrap) {
+                const chips = wrap.querySelectorAll('.variant-chip-btn');
+                chips.forEach((c, idx) => {
+                    if (idx === variantIndex) {
+                        c.classList.add('active');
+                    } else {
+                        c.classList.remove('active');
+                    }
+                });
+            }
+
+            // 2. Update active label in header
+            const labelDisplay = document.getElementById(`variant-name-display-${productId}`);
+            if (labelDisplay) {
+                labelDisplay.innerText = variantLabel;
+            }
+
+            // 3. Update price display with quick highlight feedback
+            const priceElem = document.getElementById(`card-price-${productId}`);
+            if (priceElem) {
+                priceElem.innerText = `PKR ${Number(variant.price).toLocaleString()}`;
+                priceElem.style.transition = 'color 0.15s ease, transform 0.15s ease';
+                priceElem.style.color = '#00b074';
+                priceElem.style.transform = 'scale(1.08)';
+                setTimeout(() => {
+                    priceElem.style.color = 'var(--navy-dark)';
+                    priceElem.style.transform = 'scale(1)';
+                }, 180);
+            }
+        }
+
+        // Add currently selected variant or base product to cart
+        function addActiveProductToCart(productId) {
+            const products = getStoreInventory();
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            if (product.variants && product.variants.length > 0) {
+                const selectedIdx = selectedVariantMap[productId] || 0;
+                const chosenVariant = product.variants[selectedIdx] || product.variants[0];
+                const variantLabel = chosenVariant.label || chosenVariant.size || 'Standard';
+
+                const cartItemTitle = `${product.name} (${variantLabel})`;
+                const cartItemPrice = chosenVariant.price;
+                addToCart(cartItemTitle, cartItemPrice);
+            } else {
+                addToCart(product.name, product.price || 0);
+            }
+        }
+
+        // Render products into the catalog grid with commercial option chips (sizes & flavors)
+        function renderProducts() {
+            const products = getStoreInventory();
+            const grid = document.getElementById('productGrid');
+            const countElem = document.getElementById('showingCount');
+            grid.innerHTML = '';
+
+            const filtered = products.filter(p => {
+                const matchesCategory = (activeCategory === 'all') || 
+                    (p.category === activeCategory) || 
+                    (activeCategory === 'cat-food' && p.category === 'dry-food');
+
+                const query = searchQuery.toLowerCase().trim();
+                const matchesSearch = !query || 
+                    (p.name && p.name.toLowerCase().includes(query)) ||
+                    (p.desc && p.desc.toLowerCase().includes(query)) ||
+                    (p.category && p.category.toLowerCase().includes(query));
+
+                return matchesCategory && matchesSearch;
+            });
+
+            countElem.innerText = filtered.length;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--text-muted);">
+                        <div style="font-size: 2.5rem; margin-bottom: 10px;">🔍</div>
+                        <h3 style="color: var(--navy-dark); margin-bottom: 6px;">No products match your search</h3>
+                        <p>Try searching for different keywords or select "All Essentials".</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const cats = getStoreCategories();
+            const categoryLabels = {};
+            cats.forEach(c => { categoryLabels[c.id] = c.name; });
+
+            filtered.forEach(p => {
+                const isOutOfStock = p.status === 'out-of-stock';
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.setAttribute('data-category', p.category);
+
+                const imageHtml = p.image 
+                    ? `<div class="product-img-box" style="cursor: pointer;" onclick="window.location.href='product.html?id=${p.id}'" title="Click to view full product details"><img src="${p.image}" alt="${p.name}"></div>`
+                    : `<div class="product-img-box" style="cursor: pointer;" onclick="window.location.href='product.html?id=${p.id}'" title="Click to view full product details"><span class="placeholder-icon">${p.icon || '🐾'}</span></div>`;
+
+                let variantsSection = '';
+                let initialPrice = p.price || 0;
+
+                if (p.variants && p.variants.length > 0) {
+                    const currentIdx = selectedVariantMap[p.id] || 0;
+                    const initialVariant = p.variants[currentIdx] || p.variants[0];
+                    initialPrice = initialVariant.price;
+                    const activeLabel = initialVariant.label || initialVariant.size || 'Standard';
+
+                    const chipsHtml = p.variants.map((v, vIndex) => {
+                        const vLabel = v.label || v.size || 'Standard';
+                        const safeTitle = vLabel.replace(/"/g, '&quot;');
+                        const isActive = (vIndex === currentIdx) ? 'active' : '';
+                        return `
+                            <button type="button" 
+                                    class="variant-chip-btn ${isActive}" 
+                                    onclick="selectProductVariant(${p.id}, ${vIndex})"
+                                    title="${safeTitle}">
+                                <span class="chip-radio"></span>
+                                <span>${vLabel}</span>
+                                <span class="chip-price-badge">PKR ${Number(v.price).toLocaleString()}</span>
+                            </button>
+                        `;
+                    }).join('');
+
+                    variantsSection = `
+                        <div class="variant-chips-wrap" id="variant-wrap-${p.id}">
+                            <div class="variant-chips-header">
+                                <span>Select Pack Size / Flavor:</span>
+                                <span class="variant-active-name" id="variant-name-display-${p.id}">${activeLabel}</span>
+                            </div>
+                            <div class="variant-chips-list">
+                                ${chipsHtml}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                const priceDisplay = `<span class="product-price" id="card-price-${p.id}">PKR ${Number(initialPrice).toLocaleString()}</span>`;
+                const actionButton = isOutOfStock 
+                    ? `<button class="btn-add-cart" disabled style="opacity:0.5; cursor:not-allowed;">Out of Stock</button>`
+                    : `<button class="btn-add-cart" onclick="addActiveProductToCart(${p.id})">+ Add to Cart</button>`;
+
+                card.innerHTML = `
+                    <div>
+                        ${imageHtml}
+                        <span class="product-badge">${categoryLabels[p.category] || p.category}</span>
+                        <h4 class="product-title" style="cursor: pointer;" onclick="window.location.href='product.html?id=${p.id}'" title="Click to view full product details">${p.name}</h4>
+                        <p class="product-description">${p.desc}</p>
+                        ${variantsSection}
+                    </div>
+                    <div class="product-footer" style="flex-wrap: wrap; gap: 8px;">
+                        <div>
+                            ${priceDisplay}
+                            <div><a href="product.html?id=${p.id}" style="color: var(--medical-blue); font-size: 0.76rem; font-weight: 700; text-decoration: none;">View Details ➔</a></div>
+                        </div>
+                        ${actionButton}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Helper function for variant cart additions
+        function addVariantToCart(productId) {
+            addActiveProductToCart(productId);
+        }
+
+        // Live Search Handler
+        function handleSearch() {
+            searchQuery = document.getElementById('shopSearchInput').value;
+            renderProducts();
+        }
+
+        // Filter chips Handler
+        function filterShop(category, btnElement) {
+            activeCategory = category;
+            const chips = document.querySelectorAll('.filter-chip');
+            chips.forEach(chip => chip.classList.remove('active'));
+            if (btnElement) btnElement.classList.add('active');
+            renderProducts();
+        }
+
+        // Cart State & Persistence
+        function getCart() {
+            const saved = localStorage.getItem('vet_cart');
+            return saved ? JSON.parse(saved) : [];
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('vet_cart', JSON.stringify(cart));
+            updateCartUI();
+        }
+
+        function addToCart(title, price) {
+            const cart = getCart();
+            const existingIndex = cart.findIndex(item => item.title === title);
+
+            if (existingIndex > -1) {
+                cart[existingIndex].qty += 1;
+            } else {
+                cart.push({ title, price, qty: 1 });
+            }
+
+            saveCart(cart);
+            openCart();
+        }
+
+        function changeQty(index, delta) {
+            const cart = getCart();
+            if (!cart[index]) return;
+
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            saveCart(cart);
+        }
+
+        function removeFromCart(index) {
+            const cart = getCart();
+            cart.splice(index, 1);
+            saveCart(cart);
+        }
+
+        function updateCartUI() {
+            const cart = getCart();
+            const countElem = document.getElementById('cartCount');
+            const listElem = document.getElementById('cartItemsList');
+            const totalElem = document.getElementById('cartTotal');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            countElem.innerText = totalItems;
+
+            if (cart.length === 0) {
+                listElem.innerHTML = '<p class="cart-empty-text">Your cart is currently empty.</p>';
+                totalElem.innerText = 'PKR 0';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                const subtotal = item.price * item.qty;
+                total += subtotal;
+                html += `
+                    <div class="cart-item-row">
+                        <div>
+                            <strong>${item.title}</strong><br>
+                            <small style="color: #64748b;">PKR ${item.price.toLocaleString()} each</small>
+                            <div class="cart-qty-ctrl">
+                                <button class="cart-qty-btn" onclick="changeQty(${index}, -1)">-</button>
+                                <span style="font-weight:700; font-size:0.9rem;">${item.qty}</span>
+                                <button class="cart-qty-btn" onclick="changeQty(${index}, 1)">+</button>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <strong>PKR ${subtotal.toLocaleString()}</strong><br>
+                            <button onclick="removeFromCart(${index})" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:1.1rem; padding: 4px;">&times;</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            listElem.innerHTML = html;
+            totalElem.innerText = 'PKR ' + total.toLocaleString();
+        }
+
+        function openCart() {
+            document.getElementById('cartOverlay').classList.add('active');
+        }
+
+        function closeCart() {
+            document.getElementById('cartOverlay').classList.remove('active');
+        }
+
+        // WhatsApp Checkout with Customer Delivery Information
+        function checkoutViaWhatsApp() {
+            const cart = getCart();
+            if (cart.length === 0) {
+                alert('Your cart is empty. Please add items before checking out.');
+                return;
+            }
+
+            const name = document.getElementById('custName').value.trim();
+            const phone = document.getElementById('custPhone').value.trim();
+            const address = document.getElementById('custAddress').value.trim();
+            const payment = document.getElementById('custPayment').value;
+
+            if (!name || !phone || !address) {
+                alert('Please enter your Name, Phone Number, and Delivery Address before proceeding to WhatsApp.');
+                return;
+            }
+
+            let itemsList = '';
+            let total = 0;
+            cart.forEach(item => {
+                const subtotal = item.price * item.qty;
+                total += subtotal;
+                itemsList += `• ${item.title} (x${item.qty}) - PKR ${subtotal.toLocaleString()}\n`;
+            });
+
+            const message = 
+`📦 *NEW PET SHOP ORDER* 📦
+
+👤 *Customer Name:* ${name}
+📞 *Customer Phone:* ${phone}
+📍 *Delivery Address:* ${address}
+💳 *Payment Method:* ${payment}
+
+🛒 *Ordered Items:*
+${itemsList}
+💰 *Total Amount:* PKR ${total.toLocaleString()}
+
+Please confirm product availability and dispatch details.`;
+
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/${DOCTOR_WHATSAPP}?text=${encodedMessage}`, '_blank');
+        }
+
+        // Floating WhatsApp Popup toggle
+        function toggleWaPopup() {
+            const popup = document.getElementById('waPopup');
+            popup.classList.toggle('active');
+        }
+
+        // Mobile Navigation Toggle
+        function toggleMobileNav() {
+            const nav = document.getElementById('navLinks');
+            const toggle = document.getElementById('mobileNavToggle');
+            if (nav && toggle) {
+                nav.classList.toggle('mobile-open');
+                toggle.classList.toggle('active');
+                document.body.style.overflow = nav.classList.contains('mobile-open') ? 'hidden' : '';
+            }
+        }
+
+        function closeMobileNav() {
+            const nav = document.getElementById('navLinks');
+            const toggle = document.getElementById('mobileNavToggle');
+            if (nav && toggle) {
+                nav.classList.remove('mobile-open');
+                toggle.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderCategoryChips();
+            renderProducts();
+            updateCartUI();
+        });
+    </script>
+
+    <!-- Floating 24/7 WhatsApp Dock -->
+    <button class="floating-wa-btn" onclick="toggleWaPopup()" title="Quick 24/7 WhatsApp Help">
+        <div class="wa-pulse-ring"></div>
+        <span>💬</span>
+    </button>
+
+    <div class="floating-wa-popup" id="waPopup">
+        <div class="wa-popup-header">
+            <div>
+                <h4>Dr. Rana Arham Ali</h4>
+                <span>● Online • Direct WhatsApp Help</span>
+            </div>
+            <button class="wa-close-btn" onclick="toggleWaPopup()">&times;</button>
+        </div>
+        <div class="wa-popup-body">
+            <a href="https://wa.me/923365024014?text=🚨%20*LATE-NIGHT%20EMERGENCY%20CARE%20REQUEST*%0APlease%20help,%20my%20pet%20needs%20urgent%20medical%20advice." target="_blank" class="wa-option-btn urgent">
+                <span style="font-size: 1.2rem;">🚨</span>
+                <div>
+                    <strong>Emergency Urgent Care</strong><br>
+                    <small style="color: #b91c1c;">Top priority 24/7 emergency response</small>
+                </div>
+            </a>
+            <a href="https://wa.me/923365024014?text=🩺%20*ROUTINE%20VETERINARY%20CONSULTATION*%0AHello%20Dr.%20Arham,%20I%20would%20like%20to%20consult%20regarding%20my%20pet." target="_blank" class="wa-option-btn">
+                <span style="font-size: 1.2rem;">🩺</span>
+                <div>
+                    <strong>Routine Consultation</strong><br>
+                    <small style="color: var(--text-muted);">Diet, wellness, or vaccine advice</small>
+                </div>
+            </a>
+            <a href="https://wa.me/923365024014?text=🛍️%20*PET%20SHOP%20INQUIRY*%0AHello,%20I%20have%20a%20question%20about%20pet%20food%20availability%20and%20delivery." target="_blank" class="wa-option-btn">
+                <span style="font-size: 1.2rem;">🛍️</span>
+                <div>
+                    <strong>Pet Shop & Delivery</strong><br>
+                    <small style="color: var(--text-muted);">Inquire about pet food, litter & dispatch</small>
+                </div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
